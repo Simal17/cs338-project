@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/ng-alain/schema.json",
+  "theme": {
+    "list": [
+      {
+        "theme": "dark"
+      },
+      {
+        "theme": "compact"
+      }
+    ]
+  },
+  "projects": {
+    "cs338-project": {}
+  }
+}
