@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, Renderer2, inject } from '@angular/core';
+import { DataService } from './data.service'; // Import the data service
 import { NavigationEnd, NavigationError, RouteConfigLoadStart, Router, RouterOutlet } from '@angular/router';
 import { TitleService, VERSION as VERSION_ALAIN, stepPreloader } from '@delon/theme';
 import { environment } from '@env/environment';
@@ -18,7 +19,7 @@ export class AppComponent implements OnInit {
 
   private donePreloader = stepPreloader();
 
-  constructor(el: ElementRef, renderer: Renderer2) {
+  constructor(el: ElementRef, renderer: Renderer2, private dataService: DataService) {
     renderer.setAttribute(el.nativeElement, 'ng-alain-version', VERSION_ALAIN.full);
     renderer.setAttribute(el.nativeElement, 'ng-zorro-version', VERSION_ZORRO.full);
   }
