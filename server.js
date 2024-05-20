@@ -36,7 +36,6 @@ app.get('/data', (req, res) => {
         if (err) {
           throw err;
         }
-        console.log("Hi");
         res.send(JSON.stringify(rows));
       });
   });

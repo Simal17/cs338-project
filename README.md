@@ -1,5 +1,6 @@
 # cs338-project
 
-Initial enviroment setup: git and nodejs, then 'npm install -g @angular/cli'. once clone into the repo, run 'npm install'
+Enviroment requirements:
+Git, Nodejs
 
-To launch the website, open terminal then run 'ng s', then open the localhost link
+To launch: run 'chmod +x start.sh' then './start.sh'
