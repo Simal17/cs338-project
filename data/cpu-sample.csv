@@ -1,0 +1,5 @@
+model_no,core_count,core_clock,boost_clock,graphics,socket
+10001,8,4.2,5,Radeon,AM5
+10002,6,4.7,5.3,Radeon,AM5
+10003,24,3.2,6,Intel UHD Graphics 770,LGA1700
+10004,20,3.4,5.6,Intel UHD Graphics 770,LGA1700
