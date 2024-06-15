@@ -1,4 +1,4 @@
-Model No,Socket,RAM Slots,Memory Slots
-10010,AM5,4,4
-10011,AM5,4,4
-10012,LGA1700,4,4
+model_no,socket,RAM_slots,storage_slots,has_wifi
+10010,AM5,4,4,false
+10011,AM5,4,4,true
+10012,LGA1700,4,4,false

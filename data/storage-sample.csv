@@ -1,0 +1,4 @@
+model_no,capacity,price_per_gb,type,cache,form_factor,interface
+10016,2000,0.085,SSD,2048,M.2-2280,M.2 PCIe 4.0 X4
+10017,1000,0.061,SSD,0,M.2-2280,M.2 PCIe 4.0 X4
+10018,24000,0.02,HDD,512,3.5,SATA 6.0 Gb/s

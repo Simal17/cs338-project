@@ -1,0 +1,4 @@
+model_no,type,speed,kit_size,size_per_stick,first_word_latency,cas_latency,color
+10013,ddr4,3200,2,8,10,16,black / yellow
+10014,ddr5,5600,2,16,12.857,36,black
+10015,ddr5,6000,2,16,12,36,black

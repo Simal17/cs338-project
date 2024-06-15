@@ -1,0 +1,4 @@
+model_no,chipset,memory_size,memory_type,core_clock,boost_clock,color
+10019,GeForce RTX 3060,12GB,GDDR6,1320 MHz,1777 MHz,Black
+10020,GeForce RTX 4070,12GB,GDDR6X,2310 MHz,2610 MHz,Black
+10021,GeForce RTX 4090,24GB,GDDR6X,2235 MHz,2520 MHz,Black
