@@ -1,4 +1,4 @@
 order_id,buyer_first,buyer_last,titems,email,address,date,status
-00001,David,Lee,10001,address1,2024-06-07,1
-00001,David,Lee,10002,address1,2024-06-07,1
-00001,John,Cena,10001,address2,2024-06-07,2
+00001,David,Lee,10001,dl@gmail.com,address1,2024-06-07,1
+00001,David,Lee,10002,dl@gmail.com,address1,2024-06-07,1
+00002,John,Cena,10001,jc@gmail.com,address2,2024-06-07,2
