@@ -301,31 +301,31 @@ const { kMaxLength } = require('buffer');
 //  });
 
 // STORAGE TABLE
-sql = "CREATE TABLE Storage(model_no INT NOT NULL PRIMARY KEY, capacity INT NOT NULL, price_per_gb DECIMAL(10,4) NOT NULL, type varchar(30) NOT NULL, cache INT NOT NULL, form_factor varchar(30) NOT NULL, interface varchar(50) NOT NULL, CONSTRAINT fk_stg FOREIGN KEY (model_no) REFERENCES Product(model_no))";
-db.run(sql);
+// sql = "CREATE TABLE Storage(model_no INT NOT NULL PRIMARY KEY, capacity INT NOT NULL, price_per_gb DECIMAL(10,4) NOT NULL, type varchar(30) NOT NULL, cache INT NOT NULL, form_factor varchar(30) NOT NULL, interface varchar(50) NOT NULL, CONSTRAINT fk_stg FOREIGN KEY (model_no) REFERENCES Product(model_no))";
+// db.run(sql);
 
-// read CSV files of data
-fs.createReadStream("./data/storage-sample.csv")
-  .pipe(parse({ delimiter: ",", from_line: 2}))
-  .on("data", function(row) {
-    db.serialize(function() {
-      db.run(
-        "INSERT INTO Storage VALUES (?,?,?,?,?,?,?)",
-        [row[0], row[1], row[2], row[3], row[4], row[5], row[6]],
-        function(error) {
-          if(error) { return console.log(error.message);}
-          console.log(`Inserted a row with the id: ${this.lastID}`)
-        }
-      );
-    });
-  })
+// // read CSV files of data
+// fs.createReadStream("./data/storage-sample.csv")
+//   .pipe(parse({ delimiter: ",", from_line: 2}))
+//   .on("data", function(row) {
+//     db.serialize(function() {
+//       db.run(
+//         "INSERT INTO Storage VALUES (?,?,?,?,?,?,?)",
+//         [row[0], row[1], row[2], row[3], row[4], row[5], row[6]],
+//         function(error) {
+//           if(error) { return console.log(error.message);}
+//           console.log(`Inserted a row with the id: ${this.lastID}`)
+//         }
+//       );
+//     });
+//   })
 
-.on("end", function(){
-   console.log("finished");
- })
- .on("error", function(error){
-   console.log(error.message);
- });
+// .on("end", function(){
+//    console.log("finished");
+//  })
+//  .on("error", function(error){
+//    console.log(error.message);
+//  });
 
 
 // query data
