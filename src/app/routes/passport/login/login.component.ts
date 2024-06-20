@@ -16,6 +16,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTabChangeEvent, NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { finalize } from 'rxjs';
+import { DataService } from 'src/app/data.service'; // Import the data service
+
 
 @Component({
   selector: 'passport-login',
@@ -39,6 +41,7 @@ import { finalize } from 'rxjs';
   ]
 })
 export class UserLoginComponent implements OnDestroy {
+  constructor(private dataService: DataService) {}
   private readonly router = inject(Router);
   private readonly settingsService = inject(SettingsService);
   private readonly socialService = inject(SocialService);
@@ -47,10 +50,11 @@ export class UserLoginComponent implements OnDestroy {
   private readonly startupSrv = inject(StartupService);
   private readonly http = inject(_HttpClient);
   private readonly cdr = inject(ChangeDetectorRef);
-
+  private apiUrl = 'http://localhost:3000/auth/login';
+  
   form = inject(FormBuilder).nonNullable.group({
-    userName: ['', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-    password: ['', [Validators.required, Validators.pattern(/^(ng\-alain\.com)$/)]],
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
     mobile: ['', [Validators.required, Validators.pattern(/^1\d{10}$/)]],
     captcha: ['', [Validators.required]],
     remember: [true]
@@ -110,7 +114,7 @@ export class UserLoginComponent implements OnDestroy {
     this.cdr.detectChanges();
     this.http
       .post(
-        '/login/account',
+        this.apiUrl,
         {
           type: this.type,
           userName: this.form.value.userName,
@@ -147,7 +151,12 @@ export class UserLoginComponent implements OnDestroy {
           }
           this.router.navigateByUrl(url);
         });
-      });
+      },
+      error => {
+        this.error = 'Login failed';
+        this.cdr.detectChanges();
+      }
+    );
   }
 
   open(type: string, openType: SocialOpenType = 'href'): void {

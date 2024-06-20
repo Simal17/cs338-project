@@ -1,4 +1,4 @@
-<form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">
+<form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form" action="/auth/login" method="POST">
   <nz-tabset [nzAnimated]="false" class="tabs" (nzSelectChange)="switch($event)">
     <nz-tab [nzTitle]="'app.login.tab-login-credentials' | i18n">
       @if (error) {
