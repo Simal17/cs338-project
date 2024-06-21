@@ -1,4 +1,4 @@
-const { inputData } = require('./input');
+const { inputData } = require('./sql_queries/input');
 
 const express = require('express');
 var cors = require('cors');

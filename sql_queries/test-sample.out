@@ -1,0 +1,232 @@
+[
+  {
+    "pwd": "dev101"
+  }
+]
+[]
+[
+  {
+    "pwd": "dev202"
+  }
+]
+Query executed successfully.
+Query executed successfully.
+[
+  {
+    "model_no": 10028,
+    "name": "NZXT H6 Flow",
+    "manufacture": "NZXT",
+    "retail_price": 101.99,
+    "stock_qtty": 54,
+    "tdp": 0
+  }
+]
+[
+  {
+    "model_no": 10028,
+    "type": "ATX Mid Tower",
+    "color": "black",
+    "psu": "ATX",
+    "side_panel": "Tempered Glass",
+    "external_volume": 49,
+    "internal_35_bays": 1
+  }
+]
+Query executed successfully.
+Query executed successfully.
+[
+  {
+    "model_no": 10029,
+    "name": "2TB PCIe NVMe",
+    "manufacture": "Samsung",
+    "retail_price": 269.99,
+    "stock_qtty": 56,
+    "tdp": 0
+  }
+]
+[
+  {
+    "model_no": 10029,
+    "type": "ddr5",
+    "speed": 8000,
+    "kit_size": 2,
+    "size_per_stick": 16,
+    "first_word_latency": 14,
+    "cas_latency": 36,
+    "color": "black"
+  }
+]
+Query executed successfully.
+Query executed successfully.
+[]
+[]
+Query executed successfully.
+Query executed successfully.
+[]
+[]
+[
+  {
+    "model_no": 10001,
+    "name": "Ryzen 7 7800X3D",
+    "manufacture": "AMD",
+    "retail_price": 339,
+    "stock_qtty": 18,
+    "tdp": 120,
+    "core_count": 8,
+    "core_clock": 4.2,
+    "boost_clock": 5,
+    "graphics": "Radeon",
+    "socket": "AM5"
+  },
+  {
+    "model_no": 10002,
+    "name": "Ryzen 5 7600X",
+    "manufacture": "AMD",
+    "retail_price": 204.99,
+    "stock_qtty": 38,
+    "tdp": 105,
+    "core_count": 6,
+    "core_clock": 4.7,
+    "boost_clock": 5.3,
+    "graphics": "Radeon",
+    "socket": "AM5"
+  },
+  {
+    "model_no": 10003,
+    "name": "Core i9-14900K",
+    "manufacture": "Intel",
+    "retail_price": 544.99,
+    "stock_qtty": 12,
+    "tdp": 125,
+    "core_count": 24,
+    "core_clock": 3.2,
+    "boost_clock": 6,
+    "graphics": "Intel UHD Graphics 770",
+    "socket": "LGA1700"
+  },
+  {
+    "model_no": 10004,
+    "name": "Core i7-14700K",
+    "manufacture": "Intel",
+    "retail_price": 399.99,
+    "stock_qtty": 34,
+    "tdp": 125,
+    "core_count": 20,
+    "core_clock": 3.4,
+    "boost_clock": 5.6,
+    "graphics": "Intel UHD Graphics 770",
+    "socket": "LGA1700"
+  }
+]
+Query executed successfully.
+[
+  {
+    "model_no": 10027,
+    "name": "NZXT H9 Flow",
+    "manufacture": "NZXT",
+    "retail_price": 12.99,
+    "stock_qtty": 66,
+    "tdp": 0
+  }
+]
+Query executed successfully.
+[
+  {
+    "model_no": 10027,
+    "name": "NZXT H9 Flow",
+    "manufacture": "NZXT",
+    "retail_price": 159.99,
+    "stock_qtty": 66,
+    "tdp": 0
+  }
+]
+[
+  {
+    "Product_ID": 10010,
+    "model_no": null,
+    "name": "MSI B650 GAMING PLUS WIFI",
+    "manufacture": "MSI",
+    "retail_price": 169.99,
+    "stock_qtty": 18,
+    "tdp": 0,
+    "type": null,
+    "color": null,
+    "psu": null,
+    "side_panel": null,
+    "external_volume": null,
+    "internal_35_bays": null,
+    "rpm_low": null,
+    "rpm_high": null,
+    "noise_level": null,
+    "water_cooled": null,
+    "core_count": null,
+    "core_clock": null,
+    "boost_clock": null,
+    "graphics": null,
+    "socket": "AM5",
+    "chipset": null,
+    "memory_size": null,
+    "memory_type": null,
+    "speed": null,
+    "kit_size": null,
+    "size_per_stick": null,
+    "first_word_latency": null,
+    "cas_latency": null,
+    "ram_slots": 4,
+    "storage_slots": 4,
+    "has_wifi": "false",
+    "efficiency": null,
+    "wattage": null,
+    "modular": null,
+    "capacity": null,
+    "price_per_gb": null,
+    "cache": null,
+    "form_factor": null,
+    "interface": null
+  }
+]
+[
+  {
+    "Product_ID": 10004,
+    "model_no": null,
+    "name": "Core i7-14700K",
+    "manufacture": "Intel",
+    "retail_price": 399.99,
+    "stock_qtty": 34,
+    "tdp": 125,
+    "type": null,
+    "color": null,
+    "psu": null,
+    "side_panel": null,
+    "external_volume": null,
+    "internal_35_bays": null,
+    "rpm_low": null,
+    "rpm_high": null,
+    "noise_level": null,
+    "water_cooled": null,
+    "core_count": 20,
+    "core_clock": null,
+    "boost_clock": null,
+    "graphics": "Intel UHD Graphics 770",
+    "socket": null,
+    "chipset": null,
+    "memory_size": null,
+    "memory_type": null,
+    "speed": null,
+    "kit_size": null,
+    "size_per_stick": null,
+    "first_word_latency": null,
+    "cas_latency": null,
+    "ram_slots": null,
+    "storage_slots": null,
+    "has_wifi": null,
+    "efficiency": null,
+    "wattage": null,
+    "modular": null,
+    "capacity": null,
+    "price_per_gb": null,
+    "cache": null,
+    "form_factor": null,
+    "interface": null
+  }
+]
