@@ -116,7 +116,11 @@ export class StartupService {
             text: 'Dashboard',
             link: '/dashboard',
             icon: { type: 'icon', value: 'appstore' }
-          }
+          },          {
+            text: 'Inventory',
+            link: '/inventory',
+            icon: { type: 'icon', value: 'appstore' }
+          },
         ]
       }
     ]);

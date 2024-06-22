@@ -11,12 +11,11 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
   template: `
     @if (showLangText) {
       <div nz-dropdown [nzDropdownMenu]="langMenu" nzPlacement="bottomRight">
-        <i nz-icon nzType="global"></i>
         {{ 'menu.lang' | i18n }}
         <i nz-icon nzType="down"></i>
       </div>
     } @else {
-      <i nz-dropdown [nzDropdownMenu]="langMenu" nzPlacement="bottomRight" nz-icon nzType="global"></i>
+      <i nz-dropdown [nzDropdownMenu]="langMenu" nzPlacement="bottomRight" nz-icon></i>
     }
     <nz-dropdown-menu #langMenu="nzDropdownMenu">
       <ul nz-menu>

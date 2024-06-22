@@ -1,0 +1,14 @@
+<h1>Our content will be showing here</h1>
+<button nz-button nzType="primary" (click)="addNewProduct()">Add new</button>
+<st #st [widthMode]="{ type: 'strict' }" [columns]="columns" [data]="data" />
+<nz-drawer
+[nzClosable]="false"
+[nzVisible]="newProductDrawer"
+nzPlacement="right"
+nzTitle="Add a new product"
+(nzOnClose)="closeNewProductDrawer()"
+>
+<ng-container *nzDrawerContent>
+  
+</ng-container>
+</nz-drawer>
