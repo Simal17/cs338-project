@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ALLOW_ANONYMOUS } from '@delon/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,9 @@ export class DataService {
   constructor(private http: HttpClient) { }
   getData(): Observable<any[]> {
 
-    return this.http.get<any[]>(this.dataUrl);    // Fetch data from the backend
+    return this.http.get<any[]>(this.dataUrl,        {
+      context: new HttpContext().set(ALLOW_ANONYMOUS, true)
+    });    // Fetch data from the backend
 
   }
 }

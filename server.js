@@ -61,6 +61,18 @@ app.post('/auth/login', (req, res) => {
 //       });
 //   });
 
+// query data
+app.get('/data', (req, res) => {
+  sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product;";
+  db.all(sql, [], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      console.log(rows);
+      res.send(JSON.stringify(rows));
+    });
+});
+
 
 const port = 3000;
 app.listen(port, () => {
