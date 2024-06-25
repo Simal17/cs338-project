@@ -28,15 +28,14 @@ app.use(cors({
 // login feature
 app.post('/auth/login', (req, res) => {
   const {type, userName, password} = req.body;
-  db.all("Select pwd FROM User where user_id=$user", {
+  db.all("Select fname, pwd FROM User where user_id=$user", {
     $user: userName
   },
   (err, rows) => {
     if (rows.length == 1) {
       rows.forEach((row) => {
-        console.log(row.pwd)
         if(row.pwd == password) {
-          return res.status(200).json({msg: 'ok'});
+          return res.status(200).json({msg: 'ok', name: row.fname});
         }
         else {
           return res.status(400).send('Incorrect Password.')
@@ -50,18 +49,7 @@ app.post('/auth/login', (req, res) => {
   })
 });
 
-// query data
-// app.get('/data', (req, res) => {
-//     sql = "SELECT * FROM User;";
-//     db.all(sql, [], (err, rows) => {
-//         if (err) {
-//           throw err;
-//         }
-//         res.send(JSON.stringify(rows));
-//       });
-//   });
-
-// query data
+// query for sending the Product data
 app.get('/data', (req, res) => {
   sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product;";
   db.all(sql, [], (err, rows) => {
