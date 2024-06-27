@@ -1,8 +1,8 @@
 model_no,name,manufacture,retail_price,stock_qtty,tdp
-10001,Ryzen 7 7800X3D,AMD,339,18,120
-10002,Ryzen 5 7600X,AMD,204.99,38,105
-10003,Core i9-14900K,Intel,544.99,12,125
-10004,Core i7-14700K,Intel,399.99,34,125
+20001,Ryzen 7 7800X3D,AMD,339,18,120
+20002,Ryzen 5 7600X,AMD,204.99,38,105
+20003,Core i9-14900K,Intel,544.99,12,125
+20004,Core i7-14700K,Intel,399.99,34,125
 10006,Thermalright Peerless Assassin 120 SE,Thermalright,33.9,89,10
 10007,NZXT Kraken Elite 360 RGB,NZXT,273.99,23,15
 10008,Deepcool GAMMAXX AG400 ARGB,Deepcool,29.99,56,10

@@ -1,0 +1,38 @@
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.button-container {
+  right: 32px;
+  display: flex;
+  padding-top: 48px;
+  text-align: right;
+}
+
+.modal {
+  width: 480px;
+  height: 380px;
+  border-radius: 16px;
+  background-color: white;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  padding: 32px;
+  transition: filter 0.3s ease-out;
+  position: relative;
+}
+
+.edit-page-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+}

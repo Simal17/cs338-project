@@ -91,8 +91,8 @@ export class StartupService {
     // }
     // mock
     const app: any = {
-      name: `NG-ALAIN`,
-      description: `NG-ZORRO admin panel front-end framework`
+      name: `PC Store`,
+      description: `A custome pc parts retail store`
     };
     const user: any = {
       name: 'Admin',
@@ -100,10 +100,11 @@ export class StartupService {
       email: 'cipchk@qq.com',
       token: '123456789'
     };
+    console.log(this.settingService.getUser());
     // Application information: including site name, description, year
     this.settingService.setApp(app);
     // User information: including name, avatar, email address
-    this.settingService.setUser(user);
+    // this.settingService.setUser(user);
     // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
     this.aclService.setFull(true);
     // Menu data, https://ng-alain.com/theme/menu
