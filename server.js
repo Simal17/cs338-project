@@ -18,6 +18,18 @@ const db = new sqlite3.Database('./sampletest.db', sqlite3.OPEN_READWRITE, (err)
 // inputting data into the DB
 //inputData();
 
+// Updating the ProdType column based on model_no in Product table
+sql = `UPDATE Product SET ProdType = 
+                        CASE 
+                          WHEN model_no >= 20000 and model_no <= 29999 THEN 'CPU' 
+                          ELSE NULL 
+                        END`;
+db.run(sql, [], function (err) {
+  if(err) {
+    console.error(err.message);
+  }
+});
+
 app.use(cors({
   origin: 'http://localhost:4200',  // Allow only your Angular app to access
   methods: ['GET', 'POST'],
