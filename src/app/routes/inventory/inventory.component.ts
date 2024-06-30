@@ -1,7 +1,14 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from "@angular/core";
 import { DataService } from "src/app/data.service"; // Import the data service
 import { STColumn } from "@delon/abc/st";
 import { SHARED_IMPORTS } from "@shared";
+import {
+  FormRecord,
+  FormControl,
+  NonNullableFormBuilder,
+  Validators,
+} from "@angular/forms";
+import { FORMITEMS, ProductDetail } from "./interface";
 
 @Component({
   selector: "app-inventory",
@@ -13,11 +20,18 @@ import { SHARED_IMPORTS } from "@shared";
   imports: [...SHARED_IMPORTS],
 })
 export class InventoryComponent {
+  @ViewChild('buttons', { static: true }) buttons!: TemplateRef<{ $implicit: any; index: number; column: STColumn }>;
   newProductModal = false;
-
-  constructor(private dataService: DataService) {}
+  productInfoItems = FORMITEMS.PRODUCTINFO;
+  newProductType = '';
+  newProductDetailItems: ProductDetail[] = [];
+  constructor(
+    private dataService: DataService,
+    private fb: NonNullableFormBuilder
+  ) {}
   columns: STColumn<any>[] = [];
   data: any[] = [];
+  newProductForm: FormRecord<FormControl<any>> = this.fb.record({});
 
   ngOnInit(): void {
     this.dataService.getData().subscribe(
@@ -41,19 +55,27 @@ export class InventoryComponent {
         title: "Model NO.",
         index: "model_no",
         className: "text-left",
+        width: "160px",
+        sort: true,
+      },
+      {
+        title: "Type",
+        index: "prod_type",
+        className: "text-left",
+        width: "120px",
         sort: true,
       },
       {
         title: "Name",
         index: "name",
         className: "text-left",
-        width: "420px",
         sort: true,
       },
       {
         title: "Manufacture",
         index: "manufacture",
         className: "text-left",
+        width: "160px",
         sort: true,
       },
       {
@@ -67,22 +89,67 @@ export class InventoryComponent {
         title: "Qtty",
         index: "stock_qtty",
         type: "number",
-        width: "80px",
+        width: "120px",
         className: "text-center",
         sort: true,
       },
+      {
+        width: '120px',
+        render: this.buttons
+      }
     ];
+
+    this.productInfoItems.forEach((item) => {
+      this.newProductForm.addControl(
+        item,
+        this.fb.control("", [Validators.required])
+      );
+    });
+  }
+
+  openEditor(item: any): void {
+
+  }
+
+  deleteProduct(item: any): void {
+
   }
 
   addNewProduct(): void {
     this.newProductModal = true;
   }
 
+  changePType(): void {
+    const ptype = (this.newProductForm.controls as any)['ptype'].value;
+    console.log(ptype);
+    this.newProductType = ptype;
+    if (ptype === 'cpu') {
+      this.newProductDetailItems = FORMITEMS.CPUDETAIL;
+    }
+    this.newProductDetailItems.forEach(item => {
+      this.newProductForm.addControl(
+        item.attr,
+        this.fb.control("", [Validators.required])
+      );
+    })
+  }
+
   handleCancel(): void {
     this.newProductModal = false;
+    this.newProductForm.reset();
   }
 
   handleSave(): void {
-    this.newProductModal = false;
+    if (this.newProductForm.valid) {
+      console.log(this.newProductForm.value);
+      this.newProductModal = false;
+    } else {
+      Object.values(this.newProductForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
 }
