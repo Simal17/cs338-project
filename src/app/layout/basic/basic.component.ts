@@ -42,9 +42,6 @@ import { HeaderI18nComponent } from './widgets/i18n.component';
         <router-outlet />
       </ng-template>
     </layout-default>
-    @if (showSettingDrawer) {
-      <setting-drawer />
-    }
     <theme-btn />
   `,
   standalone: true,
