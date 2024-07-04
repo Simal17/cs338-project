@@ -21,7 +21,7 @@ const db = new sqlite3.Database('./sampletest.db', sqlite3.OPEN_READWRITE, (err)
 // Updating the ProdType column based on model_no in Product table
 sql = `UPDATE Product SET ProdType = 
                         CASE 
-                          WHEN model_no >= 20000 and model_no <= 29999 THEN 'CPU' 
+                          WHEN model_no >= 20000 and model_no <= 29999 THEN 'cpu' 
                           ELSE NULL 
                         END`;
 db.run(sql, [], function (err) {
@@ -68,9 +68,50 @@ app.get('/data', (req, res) => {
       if (err) {
         throw err;
       }
-      console.log(rows);
       res.send(JSON.stringify(rows));
     });
+});
+
+// adding products to the database
+let values = [];
+let model_no;
+app.post('/newproduct', (req, res) => {  
+  res.status(200).json({msg: 'Yes'});
+
+  if(req.body.type == 'mobo') {
+  
+} else if (req.body.type == 'cpu') {
+      sql = `INSERT INTO CPU(model_no, core_count, core_clock, boost_clock, graphics, socket)
+             VALUES ((SELECT MAX(model_no) + 1 FROM CPU), ?, ?, ?, ?, ?);`
+      values.push(req.body.core_count, req.body.core_clock, req.body.boost_clock, req.body.graphics, req.body.socket);
+      db.run(sql, values, function (err) {
+        if(err) {
+          console.error(err.message);
+        }
+      });
+      values = [];
+      db.all("Select MAX(model_no) AS model_no FROM CPU",
+      (err, rows) => {
+        if (err) {
+          console.error('Error executing query:', err);
+        }
+        else {
+          model_no = rows[0].model_no;
+          sql = `INSERT INTO Product(model_no, name, manufacture, retail_price, stock_qtty, tdp, ProdType)
+          VALUES (?, ?, ?, ?, ?, ?, ?);`
+          values.push(model_no, req.body.pname, req.body.manufacture, req.body.retail_price, req.body.stock_qtty, req.body.tdp, req.body.ptype);
+          console.log(values);
+          db.run(sql, values, function (err) {
+            if(err) {
+              console.error(err.message);
+            }
+          });
+        }
+      });
+  } else if (req.body.type == 'cpu_cooler') {}
+
+  values = [];
+  model_no = null;
 });
 
 

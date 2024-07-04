@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild, inject } from "@angular/core";
 import { DataService } from "src/app/data.service"; // Import the data service
 import { STColumn } from "@delon/abc/st";
 import { SHARED_IMPORTS } from "@shared";
+import { _HttpClient } from '@delon/theme';
+import { ALLOW_ANONYMOUS } from '@delon/auth';
+import { HttpContext } from '@angular/common/http';
 import {
   FormRecord,
   FormControl,
@@ -28,10 +31,12 @@ export class InventoryComponent {
   constructor(
     private dataService: DataService,
     private fb: NonNullableFormBuilder
-  ) {}
+    ) {}
   columns: STColumn<any>[] = [];
   data: any[] = [];
   newProductForm: FormRecord<FormControl<any>> = this.fb.record({});
+  private readonly http = inject(_HttpClient);
+  private apiUrl = 'http://localhost:3000/newproduct';
 
   ngOnInit(): void {
     this.dataService.getData().subscribe(
@@ -141,7 +146,18 @@ export class InventoryComponent {
 
   handleSave(): void {
     if (this.newProductForm.valid) {
-      console.log(this.newProductForm.value);
+      const product = {
+        type: this.newProductType,
+        ...this.newProductForm.value}
+      console.log(product);
+      
+      this.http.post(this.apiUrl, product, null,
+        {
+          context: new HttpContext().set(ALLOW_ANONYMOUS, true)
+        }).subscribe(
+        res => {
+          console.log('Product saved successfully:', res.msg);
+        });
       this.newProductModal = false;
     } else {
       Object.values(this.newProductForm.controls).forEach(control => {
