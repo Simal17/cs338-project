@@ -2,10 +2,10 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
 // Read file
-const sql = fs.readFileSync('./sql_queries/test-sample.sql', 'utf8');
+const sql = fs.readFileSync('./sample_sql_queries/test-sample.sql', 'utf8');
 
 // Empty file of previous content in test-sample.out
-fs.writeFileSync('./sql_queries/test-sample.out', '');
+fs.writeFileSync('./sample_sql_queries/test-sample.out', '');
 
 // Connect db
 const db = new sqlite3.Database('./sampletest.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -42,4 +42,4 @@ function testSample(sql, output) {
     db.close(console.log("Database connection closed!"));
 }
 
-testSample(sql, './sql_queries/test-sample.out');
+testSample(sql, './sample_sql_queries/test-sample.out');
