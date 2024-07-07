@@ -1,4 +1,4 @@
-const { inputData } = require('./sql_queries/input');
+const { inputData } = require('./production_sql_queries/input-production.js');
 
 const express = require('express');
 var cors = require('cors');
@@ -11,12 +11,12 @@ const sqlite3 = require('sqlite3').verbose();
 let sql; // used to define sql statements
 
 //connection to DB
-const db = new sqlite3.Database('./sampletest.db', sqlite3.OPEN_READWRITE, (err) => {
+const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) return console.error(err.message);
 });
 
 // inputting data into the DB
-//inputData();
+// inputData();
 
 // Updating the ProdType column based on model_no in Product table
 sql = `UPDATE Product SET ProdType = 
@@ -61,9 +61,9 @@ app.post('/auth/login', (req, res) => {
   })
 });
 
-// query for sending the Product data
+// query for sending the Product data to inventory page
 app.get('/data', (req, res) => {
-  sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product;";
+  sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product ORDER BY model_no ASC;";
   db.all(sql, [], (err, rows) => {
       if (err) {
         throw err;
