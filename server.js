@@ -9,7 +9,6 @@ app.use(express.json());
 
 const sqlite3 = require('sqlite3').verbose();
 let sql; // used to define sql statements
-let ptype;
 
 //connection to DB
 const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -47,8 +46,12 @@ app.use(cors({
 // query for sending the Product data to inventory page
   app.get('/data', (req, res) => {
     const ptype = req.query.ptype;
-    console.log(ptype);
-    if (ptype == '1') {
+    const num = req.query.num;
+    console.log(num);
+    if(num != '0') {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE model_no = $num;";
+    }
+    else if (ptype == '1') {
       sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'case';";
     }
     else if (ptype == '2') {
@@ -76,14 +79,22 @@ app.use(cors({
       sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product;";
     }
 
-    db.all(sql, [], (err, rows) => {
+    if (num != 0) {
+      db.all(sql, {$num: num}, (err, rows) => {
         if (err) {
           throw err;
         }
-        console.log(sql);
-        console.log(rows.length);
         res.send(JSON.stringify(rows));
       });
+    }
+    else {
+      db.all(sql, [], (err, rows) => {
+        if (err) {
+          throw err;
+        }
+        res.send(JSON.stringify(rows));
+      });
+    }
   });
 
 
@@ -211,6 +222,11 @@ app.post('/newproduct', (req, res) => {
 // selecting products in inventory by product type
 app.post('/filter', (req, res) => {  
   res.status(200).json({msg: 'Yes', ptype: req.body.ptype});
+});
+
+// selecting products in inventory by searched model number
+app.post('/search', (req, res) => {  
+  res.status(200).json({num: req.body.num});
 });
 
 const port = 3000;

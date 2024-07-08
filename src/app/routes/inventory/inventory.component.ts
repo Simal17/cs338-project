@@ -62,16 +62,27 @@ export class InventoryComponent {
   private readonly http = inject(_HttpClient);
   private apiUrl = "http://localhost:3000/newproduct";
   private apiUrl2 = "http://localhost:3000/filter";
+  private apiUrl3 = "http://localhost:3000/search";
 
-  loadData(ptype?: number): void {
+  loadData(ptype?: number, model_no?: number): void {
     let params = new HttpParams();
-    if (ptype !== undefined) {
+    if (ptype !== undefined && model_no !== undefined) {
       params = params.set('ptype', ptype);
+      params = params.set('num', model_no);
+    }
+    else if (ptype !== undefined) {
+      params = params.set('ptype', ptype);
+      params = params.set('num', '0');
+    } 
+    else if (model_no !== undefined) {
+      params = params.set('ptype', '0');
+      params = params.set('num', model_no);
     } 
     else {
       params = params.set('ptype', '0');
+      params = params.set('num', '0');
     }
-    
+
     this.dataService.getData(params).subscribe(
       (data) => {
         this.data = data; // Assign the received data to the property
@@ -158,10 +169,22 @@ export class InventoryComponent {
 
   performeSearch(): void {
     console.log(this.searchContent);
+    this.http
+        .post(this.apiUrl3, {num: this.searchContent}, null, {context: new HttpContext().set(ALLOW_ANONYMOUS, true),})
+        .subscribe((res) => {
+          console.log("Searched Successfully:", res.num);
+          if(res.num == "") {
+            this.loadData(undefined, undefined);
+          }
+          else {
+            this.loadData(undefined, res.num);
+          }
+        });
   }
 
   resetSearch(): void {
     this.searchContent = "";
+    this.loadData(undefined, undefined);
     this.performeSearch();
   }
 
@@ -208,7 +231,7 @@ export class InventoryComponent {
         .post(this.apiUrl2, this.filterForm.value, null, {context: new HttpContext().set(ALLOW_ANONYMOUS, true),})
         .subscribe((res) => {
           console.log("Filtered Successfully:", res.msg);
-          this.loadData(res.ptype);
+          this.loadData(res.ptype, undefined);
         });
       this.filterModal = false;
     } else {
@@ -236,6 +259,5 @@ export class InventoryComponent {
         });
       }
     }
-    this.loadData();
   }
 }
