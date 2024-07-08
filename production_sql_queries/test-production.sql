@@ -19,7 +19,7 @@ WHERE Product.stock_qtty < 5;
 -- Filtering by Product Type
 SELECT product.*
 FROM Product
-WHERE ptype = ‘cpu’;
+WHERE product.model_no BETWEEN 30000 AND 39999;
 
 -- List of suppliers offering the most products
 SELECT 
