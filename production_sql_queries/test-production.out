@@ -1,0 +1,343 @@
+[
+  {
+    "pwd": "dev101"
+  }
+]
+[]
+[
+  {
+    "pwd": "dev202"
+  }
+]
+[
+  {
+    "model_no": 10003,
+    "name": "NZXT H9 Flow",
+    "manufacture": "NZXT",
+    "stock_qtty": 3
+  },
+  {
+    "model_no": 10007,
+    "name": "Cooler Master MasterBox Q300L",
+    "manufacture": "Cooler",
+    "stock_qtty": 1
+  },
+  {
+    "model_no": 10008,
+    "name": "NZXT H6 Flow",
+    "manufacture": "NZXT",
+    "stock_qtty": 3
+  },
+  {
+    "model_no": 10015,
+    "name": "Phanteks XT PRO ULTRA",
+    "manufacture": "Phanteks",
+    "stock_qtty": 2
+  },
+  {
+    "model_no": 10025,
+    "name": "HYTE Y70 Touch",
+    "manufacture": "HYTE",
+    "stock_qtty": 4
+  },
+  {
+    "model_no": 10027,
+    "name": "Montech AIR 903 BASE",
+    "manufacture": "Montech",
+    "stock_qtty": 3
+  },
+  {
+    "model_no": 10033,
+    "name": "Asus Prime AP201",
+    "manufacture": "Asus",
+    "stock_qtty": 0
+  },
+  {
+    "model_no": 10069,
+    "name": "Lian Li PC-O11 Dynamic",
+    "manufacture": "Lian",
+    "stock_qtty": 4
+  },
+  {
+    "model_no": 10086,
+    "name": "Fractal Design Core 1000 USB 3.0",
+    "manufacture": "Fractal",
+    "stock_qtty": 2
+  },
+  {
+    "model_no": 10087,
+    "name": "SAMA IM01",
+    "manufacture": "SAMA",
+    "stock_qtty": 0
+  }
+]
+[
+  {
+    "model_no": 30001,
+    "name": "AMD Ryzen 7 7800X3D",
+    "manufacture": "AMD",
+    "retail_price": 339,
+    "stock_qtty": 15,
+    "tdp": 120,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30002,
+    "name": "AMD Ryzen 5 7600X",
+    "manufacture": "AMD",
+    "retail_price": 204.99,
+    "stock_qtty": 23,
+    "tdp": 105,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30003,
+    "name": "AMD Ryzen 5 5600X",
+    "manufacture": "AMD",
+    "retail_price": 144.31,
+    "stock_qtty": 2,
+    "tdp": 65,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30004,
+    "name": "AMD Ryzen 5 7600",
+    "manufacture": "AMD",
+    "retail_price": 185,
+    "stock_qtty": 32,
+    "tdp": 65,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30005,
+    "name": "Intel Core i9-14900K",
+    "manufacture": "Intel",
+    "retail_price": 544.99,
+    "stock_qtty": 28,
+    "tdp": 125,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30006,
+    "name": "Intel Core i7-14700K",
+    "manufacture": "Intel",
+    "retail_price": 399.99,
+    "stock_qtty": 1,
+    "tdp": 125,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30007,
+    "name": "Intel Core i5-12400F",
+    "manufacture": "Intel",
+    "retail_price": 128,
+    "stock_qtty": 21,
+    "tdp": 65,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30008,
+    "name": "AMD Ryzen 5 3600",
+    "manufacture": "AMD",
+    "retail_price": 84,
+    "stock_qtty": 38,
+    "tdp": 65,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30009,
+    "name": "AMD Ryzen 7 7700X",
+    "manufacture": "AMD",
+    "retail_price": 288.81,
+    "stock_qtty": 8,
+    "tdp": 105,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30010,
+    "name": "AMD Ryzen 9 7950X3D",
+    "manufacture": "AMD",
+    "retail_price": 564,
+    "stock_qtty": 11,
+    "tdp": 120,
+    "color": "",
+    "ptype": "cpu"
+  }
+]
+[
+  {
+    "manufacture": "Corsair",
+    "count": 2127
+  },
+  {
+    "manufacture": "G.Skill",
+    "count": 2078
+  },
+  {
+    "manufacture": "Asus",
+    "count": 1978
+  },
+  {
+    "manufacture": "Kingston",
+    "count": 1880
+  },
+  {
+    "manufacture": "Gigabyte",
+    "count": 1838
+  },
+  {
+    "manufacture": "MSI",
+    "count": 1791
+  },
+  {
+    "manufacture": "TEAMGROUP",
+    "count": 1519
+  },
+  {
+    "manufacture": "Intel",
+    "count": 1380
+  },
+  {
+    "manufacture": "Mushkin",
+    "count": 1140
+  },
+  {
+    "manufacture": "GeIL",
+    "count": 1085
+  }
+]
+[
+  {
+    "model_no": 10010,
+    "name": "Montech AIR 100 ARGB",
+    "manufacture": "Montech",
+    "retail_price": 100,
+    "stock_qtty": 7,
+    "tdp": 0,
+    "color": "Black",
+    "ptype": "case"
+  }
+]
+[
+  {
+    "model_no": 10004,
+    "name": "NZXT H9 Flow",
+    "manufacture": "NZXT",
+    "retail_price": 154.99,
+    "stock_qtty": 21,
+    "tdp": 0,
+    "color": "Black",
+    "ptype": "case"
+  }
+]
+[
+  {
+    "model_no": 20065,
+    "name": "Thermalright Frozen Notte ARGB",
+    "manufacture": "Thermalright",
+    "retail_price": 50.9,
+    "stock_qtty": 23,
+    "tdp": 0,
+    "color": "",
+    "ptype": "cpu_cooler"
+  },
+  {
+    "model_no": 20248,
+    "name": "Thermalright Frozen Prism ARGB",
+    "manufacture": "Thermalright",
+    "retail_price": 50.9,
+    "stock_qtty": 23,
+    "tdp": 0,
+    "color": "",
+    "ptype": "cpu_cooler"
+  },
+  {
+    "model_no": 20579,
+    "name": "Scythe Mugen 5 Black Edition Rev.C",
+    "manufacture": "Scythe",
+    "retail_price": 50.99,
+    "stock_qtty": 9,
+    "tdp": 0,
+    "color": "",
+    "ptype": "cpu_cooler"
+  },
+  {
+    "model_no": 20707,
+    "name": "ARCTIC Freezer 34 eSports",
+    "manufacture": "ARCTIC",
+    "retail_price": 50.69,
+    "stock_qtty": 8,
+    "tdp": 0,
+    "color": "",
+    "ptype": "cpu_cooler"
+  },
+  {
+    "model_no": 21420,
+    "name": "Dynatron A49",
+    "manufacture": "Dynatron",
+    "retail_price": 50.78,
+    "stock_qtty": 9,
+    "tdp": 0,
+    "color": "",
+    "ptype": "cpu_cooler"
+  },
+  {
+    "model_no": 21707,
+    "name": "Silverstone AR11",
+    "manufacture": "Silverstone",
+    "retail_price": 50.99,
+    "stock_qtty": 32,
+    "tdp": 0,
+    "color": "",
+    "ptype": "cpu_cooler"
+  },
+  {
+    "model_no": 30231,
+    "name": "AMD Athlon X4 845",
+    "manufacture": "AMD",
+    "retail_price": 50,
+    "stock_qtty": 3,
+    "tdp": 65,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30319,
+    "name": "Intel Core i5-3470S",
+    "manufacture": "Intel",
+    "retail_price": 50,
+    "stock_qtty": 6,
+    "tdp": 65,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30394,
+    "name": "Intel Celeron G4920",
+    "manufacture": "Intel",
+    "retail_price": 50.27,
+    "stock_qtty": 3,
+    "tdp": 65,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "model_no": 30565,
+    "name": "Intel Pentium E6600",
+    "manufacture": "Intel",
+    "retail_price": 50,
+    "stock_qtty": 29,
+    "tdp": 65,
+    "color": "",
+    "ptype": "cpu"
+  }
+]

@@ -4,7 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 // Read file
 const sql = fs.readFileSync('./production_sql_queries/test-production.sql', 'utf8');
 
-// Empty file of previous content in test-sample.out
+// Empty file of previous content in test-production.out
 fs.writeFileSync('./production_sql_queries/test-production.out', '');
 
 // Connect db
@@ -17,7 +17,18 @@ function testSample(sql, output) {
 
     db.serialize(() => {
         queries.forEach((query) => {
-            if (query.toUpperCase().startsWith('SELECT')) {
+            if (query.startsWith('--')) {
+                const statements = query.split('!-');
+                db.all(statements[1], [], (err, rows) => {
+                    if(err) {
+                        console.error(err.message);
+                        fs.appendFileSync(output, `Error: ${err.message}\n`);
+                    } else {
+                        fs.appendFileSync(output, JSON.stringify(rows, null, 2) + '\n');
+                    }
+                });
+            }
+            else if (query.toUpperCase().startsWith('SELECT')) {
                 db.all(query, [], (err, rows) => {
                     if(err) {
                         console.error(err.message);
@@ -26,7 +37,8 @@ function testSample(sql, output) {
                         fs.appendFileSync(output, JSON.stringify(rows, null, 2) + '\n');
                     }
                 });
-            } else {
+            } 
+            else {
                 db.run(query, [], function (err) {
                     if(err) {
                         console.error(err.message);
