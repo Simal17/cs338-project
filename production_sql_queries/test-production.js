@@ -8,7 +8,7 @@ const sql = fs.readFileSync('./production_sql_queries/test-production.sql', 'utf
 fs.writeFileSync('./production_sql_queries/test-production.out', '');
 
 // Connect db
-const db = new sqlite3.Database('./sampletest.db', sqlite3.OPEN_READWRITE, (err) => {
+const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) return console.error(err.message);
 });
 
