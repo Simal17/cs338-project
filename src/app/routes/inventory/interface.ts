@@ -4,6 +4,10 @@ export interface ProductDetail {
 }
 
 export const FORMITEMS = {
+  FILTERINFO: [
+    "ptype",
+    "manufacture",
+  ],
   PRODUCTINFO: [
     "pname",
     "manufacture",

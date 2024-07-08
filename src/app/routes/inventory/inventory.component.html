@@ -1,6 +1,105 @@
 <h1>Inventory</h1>
 <button nz-button nzType="primary" (click)="addNewProduct()">Add new</button>
+<nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+  <input
+    type="text"
+    nz-input
+    placeholder="Search"
+    [(ngModel)]="searchContent"
+  />
+</nz-input-group>
+<ng-template #suffixIconButton>
+  <button nz-button nzType="primary" nzSearch (click)="performeSearch()">
+    <span nz-icon nzType="search"></span>
+  </button>
+  <button nz-button nzType="primary" nzSearch (click)="resetSearch()">
+    <span nz-icon nzType="redo" nzTheme="outline"></span>
+  </button>
+</ng-template>
+<button nz-button nzType="primary" (click)="openFilter()">Apply Filter</button>
 <st #st [widthMode]="{ type: 'strict' }" [columns]="columns" [data]="data" />
+@if (filterModal) {
+  <div class="edit-page-overlay">
+    <div class="modal">
+      <h2 nz-typography style="padding-bottom: 12px">Apply Filter</h2>
+      <form nz-form [formGroup]="filterForm" nzLayout="vertical">
+        <nz-form-item>
+          <nz-form-label> Product Type </nz-form-label>
+          <nz-form-control>
+            <nz-select
+              nzPlaceHolder="Please select a product type"
+              formControlName="ptype"
+            >
+              @for (item of listOfPType; track item) {
+                <nz-option
+                  [nzLabel]="item.label"
+                  [nzValue]="item.value"
+                ></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label> Manufacture </nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              formControlName="manufacture"
+              placeholder="Manufacture"
+            />
+          </nz-form-control>
+        </nz-form-item>
+        <!-- @if (newProductType !== "") {
+          <nz-row nzGutter="24">
+            @for (item of newProductDetailItems; track item; let i = $index) {
+              @if (i % 3 === 0 && i !== 0) {
+                <br />
+              }
+              <nz-col nzSpan="7">
+                <nz-form-item>
+                  <nz-form-label nzRequired> {{ item.label }} </nz-form-label>
+                  <nz-form-control
+                    nzHasFeedback
+                    nzValidatingTip="Validating..."
+                    nzErrorTip="Please enter a value"
+                  >
+                    <input
+                      nz-input
+                      [formControlName]="item.attr"
+                      [placeholder]="item.label"
+                    />
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+            }
+          </nz-row>
+        } -->
+      </form>
+      <nz-flex class="button-container" nzJustify="end">
+        <button
+          nz-button
+          nzType="text"
+          class="cancel-button"
+          (click)="handleCancel('filterModal')"
+          nzSize="large"
+          style="width: 120px"
+        >
+          <h4 nz-typography>Cancel</h4>
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          class="save-button"
+          (click)="handleSave('filterModal')"
+          nzSize="large"
+          style="width: 120px"
+        >
+          Apply
+        </button>
+      </nz-flex>
+    </div>
+  </div>
+}
 @if (newProductModal) {
   <div class="edit-page-overlay">
     <div class="modal">
@@ -124,7 +223,7 @@
           nz-button
           nzType="text"
           class="cancel-button"
-          (click)="handleCancel()"
+          (click)="handleCancel('newProductModal')"
           nzSize="large"
           style="width: 120px"
         >
@@ -134,7 +233,7 @@
           nz-button
           nzType="primary"
           class="save-button"
-          (click)="handleSave()"
+          (click)="handleSave('newProductModal')"
           nzSize="large"
           style="width: 120px"
         >
@@ -146,9 +245,14 @@
 }
 
 <ng-template #buttons let-item style="padding: 0">
-  <button nz-button nzType="primary" (click)="openEditor(item)" style="border-radius: 10px"
-    ><span nz-icon nzType="edit" nzTheme="outline"></span
-  ></button>
+  <button
+    nz-button
+    nzType="primary"
+    (click)="openEditor(item)"
+    style="border-radius: 10px"
+  >
+    <span nz-icon nzType="edit" nzTheme="outline"></span>
+  </button>
   <button
     nz-button
     nzType="primary"
@@ -158,5 +262,7 @@
     nzOkText="ok"
     nzCancelText="cancel"
     (nzOnConfirm)="deleteProduct(item)"
-    ><span nz-icon nzType="delete" nzTheme="outline"></span></button>
+  >
+    <span nz-icon nzType="delete" nzTheme="outline"></span>
+  </button>
 </ng-template>
