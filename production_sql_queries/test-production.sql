@@ -36,7 +36,7 @@ UPDATE Product SET retail_price = 59.99
 WHERE model_No = 10027;
 SELECT * FROM Product WHERE model_no = 10027;
 
-UPDATE Product SET retail_price = 159.99
+UPDATE Product SET retail_price = 69.99
 WHERE model_No = 10027;
 SELECT * FROM Product WHERE model_no = 10027;
 
