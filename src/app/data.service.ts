@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpContext } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ALLOW_ANONYMOUS } from '@delon/auth';
 
@@ -9,10 +9,11 @@ import { ALLOW_ANONYMOUS } from '@delon/auth';
 export class DataService {
   private dataUrl = 'http://localhost:3000/data';  // The URL to the backend endpoint
   constructor(private http: HttpClient) { }
-  getData(): Observable<any[]> {
+  getData(params: HttpParams): Observable<any[]> {
 
     return this.http.get<any[]>(this.dataUrl,        {
-      context: new HttpContext().set(ALLOW_ANONYMOUS, true)
+      context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+      params: params
     });    // Fetch data from the backend
 
   }

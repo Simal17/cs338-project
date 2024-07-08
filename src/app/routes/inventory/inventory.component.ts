@@ -10,7 +10,7 @@ import { STColumn } from "@delon/abc/st";
 import { SHARED_IMPORTS } from "@shared";
 import { _HttpClient } from "@delon/theme";
 import { ALLOW_ANONYMOUS } from "@delon/auth";
-import { HttpContext } from "@angular/common/http";
+import { HttpContext, HttpParams } from "@angular/common/http";
 import {
   FormRecord,
   FormControl,
@@ -61,9 +61,18 @@ export class InventoryComponent {
   filterForm: FormRecord<FormControl<any>> = this.fb.record({});
   private readonly http = inject(_HttpClient);
   private apiUrl = "http://localhost:3000/newproduct";
+  private apiUrl2 = "http://localhost:3000/filter";
 
-  ngOnInit(): void {
-    this.dataService.getData().subscribe(
+  loadData(ptype?: number): void {
+    let params = new HttpParams();
+    if (ptype !== undefined) {
+      params = params.set('ptype', ptype);
+    } 
+    else {
+      params = params.set('ptype', '0');
+    }
+    
+    this.dataService.getData(params).subscribe(
       (data) => {
         this.data = data; // Assign the received data to the property
       },
@@ -143,6 +152,10 @@ export class InventoryComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.loadData();
+  }
+
   performeSearch(): void {
     console.log(this.searchContent);
   }
@@ -191,15 +204,12 @@ export class InventoryComponent {
 
   handleSave(modalType: string): void {
     if (modalType === "filterModal") {
-      console.log(this.filterForm.value);
-
-      // this.http
-      //   .post(this.apiUrl, product, null, {
-      //     context: new HttpContext().set(ALLOW_ANONYMOUS, true),
-      //   })
-      //   .subscribe((res) => {
-      //     console.log("Product saved successfully:", res.msg);
-      //   });
+      this.http
+        .post(this.apiUrl2, this.filterForm.value, null, {context: new HttpContext().set(ALLOW_ANONYMOUS, true),})
+        .subscribe((res) => {
+          console.log("Filtered Successfully:", res.msg);
+          this.loadData(res.ptype);
+        });
       this.filterModal = false;
     } else {
       if (this.newProductForm.valid) {
@@ -226,5 +236,6 @@ export class InventoryComponent {
         });
       }
     }
+    this.loadData();
   }
 }

@@ -9,6 +9,7 @@ app.use(express.json());
 
 const sqlite3 = require('sqlite3').verbose();
 let sql; // used to define sql statements
+let ptype;
 
 //connection to DB
 const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -18,7 +19,7 @@ const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
 // inputting data into the DB
 // inputData();
 
-// Updating the ProdType column based on model_no in Product table
+// Updating the Product Type column based on model_no in Product table
 sql = `UPDATE Product SET ptype = 
                         CASE 
                           WHEN model_no >= 10000 and model_no <= 19999 THEN 'case'
@@ -42,6 +43,48 @@ app.use(cors({
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// query for sending the Product data to inventory page
+  app.get('/data', (req, res) => {
+    const ptype = req.query.ptype;
+    console.log(ptype);
+    if (ptype == '1') {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'case';";
+    }
+    else if (ptype == '2') {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu_cooler';";
+    }
+    else if (ptype == '3') {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu';";
+    }
+    else if (ptype == '4') {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'gpu';";
+    }
+    else if (ptype == '5') {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'memory';";
+    }
+    else if (ptype == '7') {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'mobo';";
+    }
+    else if (ptype == '8') {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'psu';";
+    }
+    else if (ptype == '9') {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'storage';";
+    }
+    else {
+      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product;";
+    }
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+          throw err;
+        }
+        console.log(sql);
+        console.log(rows.length);
+        res.send(JSON.stringify(rows));
+      });
+  });
 
 
 // login feature
@@ -68,16 +111,6 @@ app.post('/auth/login', (req, res) => {
   })
 });
 
-// query for sending the Product data to inventory page
-app.get('/data', (req, res) => {
-  sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product;";
-  db.all(sql, [], (err, rows) => {
-      if (err) {
-        throw err;
-      }
-      res.send(JSON.stringify(rows));
-    });
-});
 
 // adding products to the database
 let values = [];
@@ -175,6 +208,10 @@ app.post('/newproduct', (req, res) => {
   model_no = null;
 });
 
+// selecting products in inventory by product type
+app.post('/filter', (req, res) => {  
+  res.status(200).json({msg: 'Yes', ptype: req.body.ptype});
+});
 
 const port = 3000;
 app.listen(port, () => {
