@@ -6,7 +6,7 @@ import {
   inject,
 } from "@angular/core";
 import { DataService } from "src/app/data.service"; // Import the data service
-import { STColumn } from "@delon/abc/st";
+import { STColumn, STComponent } from "@delon/abc/st";
 import { SHARED_IMPORTS } from "@shared";
 import { _HttpClient } from "@delon/theme";
 import { ALLOW_ANONYMOUS } from "@delon/auth";
@@ -29,6 +29,7 @@ import { FORMITEMS, ProductDetail } from "./interface";
   imports: [...SHARED_IMPORTS],
 })
 export class InventoryComponent {
+  @ViewChild("st", { static: false }) st?: STComponent;
   @ViewChild("buttons", { static: true }) buttons!: TemplateRef<{
     $implicit: any;
     index: number;
@@ -42,15 +43,15 @@ export class InventoryComponent {
   newProductType = "";
   newProductDetailItems: ProductDetail[] = [];
   listOfPType = [
-    {value: '1', label: 'Case'},
-    {value: '2', label: 'CPU Cooler'},
-    {value: '3', label: 'CPU'},
-    {value: '4', label: 'GPU'},
-    {value: '5', label: 'Memory'},
-    {value: '7', label: 'Motherboard'},
-    {value: '8', label: 'PSU'},
-    {value: '9', label: 'Storage'},
-  ]
+    { value: "1", label: "Case" },
+    { value: "2", label: "CPU Cooler" },
+    { value: "3", label: "CPU" },
+    { value: "4", label: "GPU" },
+    { value: "5", label: "Memory" },
+    { value: "7", label: "Motherboard" },
+    { value: "8", label: "PSU" },
+    { value: "9", label: "Storage" },
+  ];
   constructor(
     private dataService: DataService,
     private fb: NonNullableFormBuilder
@@ -67,38 +68,32 @@ export class InventoryComponent {
   loadData(ptype?: number, model_no?: number): void {
     let params = new HttpParams();
     if (ptype !== undefined && model_no !== undefined) {
-      params = params.set('ptype', ptype);
-      params = params.set('num', model_no);
-    }
-    else if (ptype !== undefined) {
-      params = params.set('ptype', ptype);
-      params = params.set('num', '0');
-    } 
-    else if (model_no !== undefined) {
-      params = params.set('ptype', '0');
-      params = params.set('num', model_no);
-    } 
-    else {
-      params = params.set('ptype', '0');
-      params = params.set('num', '0');
+      params = params.set("ptype", ptype);
+      params = params.set("num", model_no);
+    } else if (ptype !== undefined) {
+      params = params.set("ptype", ptype);
+      params = params.set("num", "0");
+    } else if (model_no !== undefined) {
+      params = params.set("ptype", "0");
+      params = params.set("num", model_no);
+    } else {
+      params = params.set("ptype", "0");
+      params = params.set("num", "0");
     }
 
     this.dataService.getData(params).subscribe(
       (data) => {
         this.data = data; // Assign the received data to the property
+        this.st?.reload();
       },
       (error) => {
         console.error("There was an error retrieving data:", error);
       }
     );
-    // this.data = [{ model_no: '10001',name: 'Ryzen 7 7800X3D', manufacture: 'AMD', retail_price: 339,stock_qtty: 200 }];
-    // this.productService.getThirdPartyStatus().subscribe(res => {
-    //   this.dataFromApi = res;
-    // });
+  }
 
-    // this.inventoryListUrl = this.inventoryListUrl + this.settings.getData('presaleId');
-
-    //dataFromApi is from observable and there is a delay. the columns need to be initialled correct;;y
+  ngOnInit(): void {
+    this.loadData();
     this.columns = [
       {
         title: "Model NO.",
@@ -109,7 +104,7 @@ export class InventoryComponent {
       },
       {
         title: "Type",
-        index: "prod_type",
+        index: "ptype",
         className: "text-left",
         width: "120px",
         sort: true,
@@ -149,10 +144,7 @@ export class InventoryComponent {
     ];
 
     this.filterItems.forEach((item) => {
-      this.filterForm.addControl(
-        item,
-        this.fb.control("")
-      );
+      this.filterForm.addControl(item, this.fb.control(""));
     });
 
     this.productInfoItems.forEach((item) => {
@@ -163,23 +155,21 @@ export class InventoryComponent {
     });
   }
 
-  ngOnInit(): void {
-    this.loadData();
-  }
-
   performeSearch(): void {
     console.log(this.searchContent);
+    if (this.searchContent )
     this.http
-        .post(this.apiUrl3, {num: this.searchContent}, null, {context: new HttpContext().set(ALLOW_ANONYMOUS, true),})
-        .subscribe((res) => {
-          console.log("Searched Successfully:", res.num);
-          if(res.num == "") {
-            this.loadData(undefined, undefined);
-          }
-          else {
-            this.loadData(undefined, res.num);
-          }
-        });
+      .post(this.apiUrl3, { num: this.searchContent }, null, {
+        context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+      })
+      .subscribe((res) => {
+        console.log("Searched Successfully:", res.num);
+        if (res.num == "") {
+          this.loadData(undefined, undefined);
+        } else {
+          this.loadData(undefined, res.num);
+        }
+      });
   }
 
   resetSearch(): void {
@@ -228,7 +218,9 @@ export class InventoryComponent {
   handleSave(modalType: string): void {
     if (modalType === "filterModal") {
       this.http
-        .post(this.apiUrl2, this.filterForm.value, null, {context: new HttpContext().set(ALLOW_ANONYMOUS, true),})
+        .post(this.apiUrl2, this.filterForm.value, null, {
+          context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+        })
         .subscribe((res) => {
           console.log("Filtered Successfully:", res.msg);
           this.loadData(res.ptype, undefined);
