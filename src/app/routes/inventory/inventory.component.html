@@ -186,34 +186,52 @@
               formControlName="ptype"
               (ngModelChange)="changePType()"
             >
-              <nz-option nzLabel="CPU" nzValue="cpu"></nz-option>
-              <nz-option nzLabel="Motherboard" nzValue="mobo"></nz-option>
-              <nz-option nzLabel="CPU Cooler" nzValue="cpu_cooler"></nz-option>
+            @for (item of listOfPType; track item) {
+              <nz-option
+                [nzLabel]="item.label"
+                [nzValue]="item.value"
+              ></nz-option>
+            }
             </nz-select>
           </nz-form-control>
         </nz-form-item>
-        @if (newProductType !== "") {
+        @if (newProductType !== undefined) {
           <nz-row nzGutter="24">
             @for (item of newProductDetailItems; track item; let i = $index) {
               @if (i % 3 === 0 && i !== 0) {
                 <br />
               }
-              <nz-col nzSpan="7">
-                <nz-form-item>
-                  <nz-form-label nzRequired> {{ item.label }} </nz-form-label>
-                  <nz-form-control
-                    nzHasFeedback
-                    nzValidatingTip="Validating..."
-                    nzErrorTip="Please enter a value"
-                  >
-                    <input
-                      nz-input
-                      [formControlName]="item.attr"
-                      [placeholder]="item.label"
-                    />
-                  </nz-form-control>
-                </nz-form-item>
-              </nz-col>
+              @if (item.required) {
+                <nz-col nzSpan="7">
+                  <nz-form-item>
+                    <nz-form-label nzRequired> {{ item.label }} </nz-form-label>
+                    <nz-form-control
+                      nzHasFeedback
+                      nzValidatingTip="Validating..."
+                      nzErrorTip="Please enter a value"
+                    >
+                      <input
+                        nz-input
+                        [formControlName]="item.attr"
+                        [placeholder]="item.label"
+                      />
+                    </nz-form-control>
+                  </nz-form-item>
+                </nz-col>
+              } @else {
+                <nz-col nzSpan="7">
+                  <nz-form-item>
+                    <nz-form-label> {{ item.label }} </nz-form-label>
+                    <nz-form-control>
+                      <input
+                        nz-input
+                        [formControlName]="item.attr"
+                        [placeholder]="item.label"
+                      />
+                    </nz-form-control>
+                  </nz-form-item>
+                </nz-col>
+              }
             }
           </nz-row>
         }

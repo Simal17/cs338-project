@@ -17,7 +17,7 @@ import {
   NonNullableFormBuilder,
   Validators,
 } from "@angular/forms";
-import { FORMITEMS, ProductDetail } from "./interface";
+import { FORMITEMS, listOfPType, ProductDetail } from "./interface";
 
 @Component({
   selector: "app-inventory",
@@ -42,16 +42,7 @@ export class InventoryComponent {
   searchContent = "";
   newProductType = "";
   newProductDetailItems: ProductDetail[] = [];
-  listOfPType = [
-    { value: "1", label: "Case" },
-    { value: "2", label: "CPU Cooler" },
-    { value: "3", label: "CPU" },
-    { value: "4", label: "GPU" },
-    { value: "5", label: "Memory" },
-    { value: "7", label: "Motherboard" },
-    { value: "8", label: "PSU" },
-    { value: "9", label: "Storage" },
-  ];
+  listOfPType = listOfPType;
   constructor(
     private dataService: DataService,
     private fb: NonNullableFormBuilder
@@ -157,25 +148,26 @@ export class InventoryComponent {
 
   performeSearch(): void {
     console.log(this.searchContent);
-    if (this.searchContent )
-    this.http
-      .post(this.apiUrl3, { num: this.searchContent }, null, {
-        context: new HttpContext().set(ALLOW_ANONYMOUS, true),
-      })
-      .subscribe((res) => {
-        console.log("Searched Successfully:", res.num);
-        if (res.num == "") {
-          this.loadData(undefined, undefined);
-        } else {
-          this.loadData(undefined, res.num);
-        }
-      });
+    if (this.searchContent)
+      this.http
+        .post(this.apiUrl3, { num: this.searchContent }, null, {
+          context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+        })
+        .subscribe((res) => {
+          console.log("Searched Successfully:", res.num);
+          if (res.num == "") {
+            this.loadData(undefined, undefined);
+          } else {
+            this.loadData(undefined, res.num);
+          }
+        });
   }
 
   resetSearch(): void {
     this.searchContent = "";
-    this.loadData(undefined, undefined);
+    this.loadData();
     this.performeSearch();
+    this.filterForm.reset();
   }
 
   openFilter(): void {
@@ -192,16 +184,34 @@ export class InventoryComponent {
 
   changePType(): void {
     const ptype = (this.newProductForm.controls as any)["ptype"].value;
-    console.log(ptype);
     this.newProductType = ptype;
-    if (ptype === "cpu") {
+    if (ptype === "1") {
+      this.newProductDetailItems = FORMITEMS.CASEDETAIL;
+    } else if (ptype === "2") {
+      this.newProductDetailItems = FORMITEMS.CPUCOOLERDETAIL;
+    } else if (ptype === "3") {
       this.newProductDetailItems = FORMITEMS.CPUDETAIL;
+    } else if (ptype === "4") {
+      this.newProductDetailItems = FORMITEMS.GPUDETAIL;
+    } else if (ptype === "5") {
+      this.newProductDetailItems = FORMITEMS.MEMORYDETAIL;
+    } else if (ptype === "7") {
+      this.newProductDetailItems = FORMITEMS.MOBODETAIL;
+    } else if (ptype === "8") {
+      this.newProductDetailItems = FORMITEMS.PSUDETAIL;
+    } else if (ptype === "9") {
+      this.newProductDetailItems = FORMITEMS.STORAGEDETAIL;
     }
+
     this.newProductDetailItems.forEach((item) => {
-      this.newProductForm.addControl(
-        item.attr,
-        this.fb.control("", [Validators.required])
-      );
+      if (item.required) {
+        this.newProductForm.addControl(
+          item.attr,
+          this.fb.control("", [Validators.required])
+        );
+      } else {
+        this.newProductForm.addControl(item.attr, this.fb.control(""));
+      }
     });
   }
 
@@ -242,6 +252,8 @@ export class InventoryComponent {
             console.log("Product saved successfully:", res.msg);
           });
         this.newProductModal = false;
+        this.newProductForm.reset();
+        
       } else {
         Object.values(this.newProductForm.controls).forEach((control) => {
           if (control.invalid) {
