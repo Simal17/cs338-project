@@ -56,20 +56,32 @@ export class InventoryComponent {
   private apiUrl2 = "http://localhost:3000/filter";
   private apiUrl3 = "http://localhost:3000/search";
 
-  loadData(ptype?: number, model_no?: number): void {
+  loadData(ptype?: number, model_no?: number, manufacture?: string): void {
     let params = new HttpParams();
-    if (ptype !== undefined && model_no !== undefined) {
+    if (ptype !== undefined && manufacture !== undefined && model_no !== undefined) {
       params = params.set("ptype", ptype);
       params = params.set("num", model_no);
+      params = params.set("manufacture", manufacture);
+    } else if (ptype !== undefined && manufacture !== undefined) {
+      params = params.set("ptype", ptype);
+      params = params.set("num", "0");
+      params = params.set("manufacture", manufacture);
     } else if (ptype !== undefined) {
       params = params.set("ptype", ptype);
       params = params.set("num", "0");
+      params = params.set("manufacture", "");
     } else if (model_no !== undefined) {
       params = params.set("ptype", "0");
       params = params.set("num", model_no);
+      params = params.set("manufacture", "");
+    } else if (manufacture !== undefined) {
+      params = params.set("ptype", "0");
+      params = params.set("num", "0");
+      params = params.set("manufacture", manufacture);
     } else {
       params = params.set("ptype", "0");
       params = params.set("num", "0");
+      params = params.set("manufacture", "");
     }
 
     this.dataService.getData(params).subscribe(
@@ -84,7 +96,7 @@ export class InventoryComponent {
   }
 
   ngOnInit(): void {
-    this.loadData();
+    this.loadData(undefined, undefined, undefined);
     this.columns = [
       {
         title: "Model NO.",
@@ -156,9 +168,9 @@ export class InventoryComponent {
         .subscribe((res) => {
           console.log("Searched Successfully:", res.num);
           if (res.num == "") {
-            this.loadData(undefined, undefined);
+            this.loadData(undefined, undefined, undefined);
           } else {
-            this.loadData(undefined, res.num);
+            this.loadData(undefined, res.num, undefined);
           }
         });
   }
@@ -176,7 +188,9 @@ export class InventoryComponent {
 
   openEditor(item: any): void {}
 
-  deleteProduct(item: any): void {}
+  deleteProduct(item: any): void {
+
+  }
 
   addNewProduct(): void {
     this.newProductModal = true;
@@ -227,19 +241,20 @@ export class InventoryComponent {
 
   handleSave(modalType: string): void {
     if (modalType === "filterModal") {
+      console.log(this.filterForm.value);
       this.http
         .post(this.apiUrl2, this.filterForm.value, null, {
           context: new HttpContext().set(ALLOW_ANONYMOUS, true),
         })
         .subscribe((res) => {
           console.log("Filtered Successfully:", res.msg);
-          this.loadData(res.ptype, undefined);
+          this.loadData(res.ptype, undefined, res.manufacture);
         });
       this.filterModal = false;
     } else {
       if (this.newProductForm.valid) {
         const product = {
-          type: this.newProductType,
+          ptype: this.newProductType,
           ...this.newProductForm.value,
         };
         console.log(product);
