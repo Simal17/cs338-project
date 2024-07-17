@@ -28,7 +28,9 @@
           <nz-form-control>
             <nz-select
               nzPlaceHolder="Please select a product type"
-              formControlName="ptype"
+              [(ngModel)]="filterPtype"
+              [ngModelOptions]="{ standalone: true }"
+              (ngModelChange)="changeFilterType()"
             >
               @for (item of listOfPType; track item) {
                 <nz-option
@@ -49,31 +51,17 @@
             />
           </nz-form-control>
         </nz-form-item>
-        <!-- @if (newProductType !== "") {
-          <nz-row nzGutter="24">
-            @for (item of newProductDetailItems; track item; let i = $index) {
-              @if (i % 3 === 0 && i !== 0) {
-                <br />
-              }
-              <nz-col nzSpan="7">
-                <nz-form-item>
-                  <nz-form-label nzRequired> {{ item.label }} </nz-form-label>
-                  <nz-form-control
-                    nzHasFeedback
-                    nzValidatingTip="Validating..."
-                    nzErrorTip="Please enter a value"
-                  >
-                    <input
-                      nz-input
-                      [formControlName]="item.attr"
-                      [placeholder]="item.label"
-                    />
-                  </nz-form-control>
-                </nz-form-item>
-              </nz-col>
-            }
-          </nz-row>
-        } -->
+        <nz-form-item>
+          <nz-form-label> Price filter for the type</nz-form-label>
+          <nz-form-control>
+            <nz-slider
+              nzRange
+              [nzMax]="prangeMax"
+              [(ngModel)]="prange"
+              [ngModelOptions]="{ standalone: true }"
+            ></nz-slider>
+          </nz-form-control>
+        </nz-form-item>
       </form>
       <nz-flex class="button-container" nzJustify="end">
         <button
@@ -186,12 +174,12 @@
               formControlName="ptype"
               (ngModelChange)="changePType()"
             >
-            @for (item of listOfPType; track item) {
-              <nz-option
-                [nzLabel]="item.label"
-                [nzValue]="item.value"
-              ></nz-option>
-            }
+              @for (item of listOfPType; track item) {
+                <nz-option
+                  [nzLabel]="item.label"
+                  [nzValue]="item.value"
+                ></nz-option>
+              }
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -252,6 +240,51 @@
           nzType="primary"
           class="save-button"
           (click)="handleSave('newProductModal')"
+          nzSize="large"
+          style="width: 120px"
+        >
+          Save
+        </button>
+      </nz-flex>
+    </div>
+  </div>
+}
+@if (editModal) {
+  <div class="edit-page-overlay">
+    <div class="modal" style="height: 50%">
+      <h2 nz-typography style="padding-bottom: 12px">Edit Product Price</h2>
+      <form nz-form [formGroup]="editPriceForm" nzLayout="vertical">
+        <nz-form-item nz-col nzSpan="6" style="padding-right: 18px">
+          <nz-form-label nzRequired> Retail Price </nz-form-label>
+          <nz-form-control
+            nzHasFeedback
+            nzValidatingTip="Validating..."
+            nzErrorTip="Please enter a value"
+          >
+            <input
+              nz-input
+              formControlName="retail_price"
+              placeholder="Retail Price"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      <nz-flex class="button-container" nzJustify="end">
+        <button
+          nz-button
+          nzType="text"
+          class="cancel-button"
+          (click)="handleCancel('editModal')"
+          nzSize="large"
+          style="width: 120px"
+        >
+          <h4 nz-typography>Cancel</h4>
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          class="save-button"
+          (click)="handleSave('editModal')"
           nzSize="large"
           style="width: 120px"
         >

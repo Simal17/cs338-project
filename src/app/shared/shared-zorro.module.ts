@@ -20,6 +20,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 export const SHARED_ZORRO_MODULES = [
   NzFlexModule,
@@ -44,4 +45,5 @@ export const SHARED_ZORRO_MODULES = [
   NzIconModule,
   NzCheckboxModule,
   NzSpinModule,
+  NzSliderModule,
 ];

@@ -17,7 +17,7 @@ import {
   NonNullableFormBuilder,
   Validators,
 } from "@angular/forms";
-import { FORMITEMS, listOfPType, ProductDetail } from "./interface";
+import { FORMITEMS, listOfPType, ProductDetail, ProductInfo } from "./interface";
 
 @Component({
   selector: "app-inventory",
@@ -37,12 +37,17 @@ export class InventoryComponent {
   }>;
   newProductModal = false;
   filterModal = false;
+  filterPtype = "";
+  editModal = false;
   productInfoItems = FORMITEMS.PRODUCTINFO;
   filterItems = FORMITEMS.FILTERINFO;
+  prangeMax = 0;
+  prange = [0, 0];
   searchContent = "";
   newProductType = "";
   newProductDetailItems: ProductDetail[] = [];
   listOfPType = listOfPType;
+  editProduct: ProductInfo = {};
   constructor(
     private dataService: DataService,
     private fb: NonNullableFormBuilder
@@ -51,6 +56,7 @@ export class InventoryComponent {
   data: any[] = [];
   newProductForm: FormRecord<FormControl<any>> = this.fb.record({});
   filterForm: FormRecord<FormControl<any>> = this.fb.record({});
+  editPriceForm: FormRecord<FormControl<any>> = this.fb.record({});
   private readonly http = inject(_HttpClient);
   private apiUrl = "http://localhost:3000/newproduct";
   private apiUrl2 = "http://localhost:3000/filter";
@@ -58,7 +64,11 @@ export class InventoryComponent {
 
   loadData(ptype?: number, model_no?: number, manufacture?: string): void {
     let params = new HttpParams();
-    if (ptype !== undefined && manufacture !== undefined && model_no !== undefined) {
+    if (
+      ptype !== undefined &&
+      manufacture !== undefined &&
+      model_no !== undefined
+    ) {
       params = params.set("ptype", ptype);
       params = params.set("num", model_no);
       params = params.set("manufacture", manufacture);
@@ -88,6 +98,7 @@ export class InventoryComponent {
       (data) => {
         this.data = data; // Assign the received data to the property
         this.st?.reload();
+        console.log(this.data[0]);
       },
       (error) => {
         console.error("There was an error retrieving data:", error);
@@ -145,17 +156,6 @@ export class InventoryComponent {
         render: this.buttons,
       },
     ];
-
-    this.filterItems.forEach((item) => {
-      this.filterForm.addControl(item, this.fb.control(""));
-    });
-
-    this.productInfoItems.forEach((item) => {
-      this.newProductForm.addControl(
-        item,
-        this.fb.control("", [Validators.required])
-      );
-    });
   }
 
   performeSearch(): void {
@@ -184,16 +184,41 @@ export class InventoryComponent {
 
   openFilter(): void {
     this.filterModal = true;
+
+    this.filterItems.forEach((item) => {
+      this.filterForm.addControl(item, this.fb.control(""));
+    });
   }
 
-  openEditor(item: any): void {}
+  changeFilterType(): void {
+    this.filterForm.patchValue({ ptype: this.filterPtype });
+
+    // get max price based on this.filterPtype then update this.prangeMax
+    this.prangeMax
+  }
+
+  openEditor(item: any): void {
+    this.editModal = true;
+    this.editProduct = item;
+    this.editPriceForm.addControl(
+      "retail_price",
+      this.fb.control(item.retail_price, [Validators.required])
+    );
+  }
 
   deleteProduct(item: any): void {
-
+    const deleteItem = item.model_no;
   }
 
   addNewProduct(): void {
     this.newProductModal = true;
+
+    this.productInfoItems.forEach((item) => {
+      this.newProductForm.addControl(
+        item,
+        this.fb.control("", [Validators.required])
+      );
+    });
   }
 
   changePType(): void {
@@ -233,9 +258,12 @@ export class InventoryComponent {
     if (modalType === "filterModal") {
       this.filterModal = false;
       this.filterForm.reset();
-    } else {
+    } else if (modalType === "newProductModal") {
       this.newProductModal = false;
       this.newProductForm.reset();
+    } else {
+      this.editModal = false;
+      this.editPriceForm.reset();
     }
   }
 
@@ -251,7 +279,7 @@ export class InventoryComponent {
           this.loadData(res.ptype, undefined, res.manufacture);
         });
       this.filterModal = false;
-    } else {
+    } else if (modalType === "newProductModal") {
       if (this.newProductForm.valid) {
         const product = {
           ptype: this.newProductType,
@@ -268,9 +296,31 @@ export class InventoryComponent {
           });
         this.newProductModal = false;
         this.newProductForm.reset();
-        
       } else {
         Object.values(this.newProductForm.controls).forEach((control) => {
+          if (control.invalid) {
+            control.markAsDirty();
+            control.updateValueAndValidity({ onlySelf: true });
+          }
+        });
+      }
+    } else {
+      if (this.editPriceForm.valid) {
+        this.editProduct.retail_price = (this.editPriceForm.controls as any)["retail_price"].value;
+        const product = this.editProduct;
+        console.log(product);
+
+        // this.http
+        //   .post(this.apiUrl, product, null, {
+        //     context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+        //   })
+        //   .subscribe((res) => {
+        //     console.log("Product saved successfully:", res.msg);
+        //   });
+        this.editModal = false;
+        this.editPriceForm.reset();
+      } else {
+        Object.values(this.editPriceForm.controls).forEach((control) => {
           if (control.invalid) {
             control.markAsDirty();
             control.updateValueAndValidity({ onlySelf: true });
