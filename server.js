@@ -15,6 +15,12 @@ const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) return console.error(err.message);
 });
 
+db.run('PRAGMA foreign_keys = ON;', (err) => {
+  if (err) {
+    console.error('Error with foreign keys:', err.message);
+  }
+});
+
 // inputting data into the DB
 // inputData();
 
@@ -423,10 +429,10 @@ app.post('/search', (req, res) => {
 });
 
 // deleting products from the inventory page
-app.post('/delete', (req, res) => {  
+app.post('/del', (req, res) => {  
   res.status(200).json();
   sql = `DELETE FROM Product WHERE model_no = $modelno;`
-  db.run(sql, {$modelno: req.body.values}, function (err) {
+  db.run(sql, {$modelno: req.body.modelNo}, function (err) {
     if(err) {
       console.error(err.message);
     }
