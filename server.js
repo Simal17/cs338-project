@@ -52,63 +52,63 @@ app.use(cors({
     console.log(manufacture);
 
     if (num != '0') {
-      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE model_no = $num;";
+      sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE model_no = $num;";
     } else if (manufacture != "") {
       if (ptype == '1') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'case' and manufacture = $manufacture;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'case' and manufacture = $manufacture;";
       }
       else if (ptype == '2') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu_cooler' and manufacture = $manufacture;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu_cooler' and manufacture = $manufacture;";
       }
       else if (ptype == '3') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu' and manufacture = $manufacture;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu' and manufacture = $manufacture;";
       }
       else if (ptype == '4') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'gpu' and manufacture = $manufacture;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'gpu' and manufacture = $manufacture;";
       }
       else if (ptype == '5') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'memory' and manufacture = $manufacture;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'memory' and manufacture = $manufacture;";
       }
       else if (ptype == '7') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'mobo' and manufacture = $manufacture;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'mobo' and manufacture = $manufacture;";
       }
       else if (ptype == '8') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'psu' and manufacture = $manufacture;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'psu' and manufacture = $manufacture;";
       }
       else if (ptype == '9') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'storage' and manufacture = $manufacture;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'storage' and manufacture = $manufacture;";
       } else {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE manufacture = $manufacture;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE manufacture = $manufacture;";
       }
     } else if (manufacture == "") {
       if (ptype == '1') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'case';";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'case';";
       }
       else if (ptype == '2') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu_cooler';";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu_cooler';";
       }
       else if (ptype == '3') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu';";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu';";
       }
       else if (ptype == '4') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'gpu';";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'gpu';";
       }
       else if (ptype == '5') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'memory';";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'memory';";
       }
       else if (ptype == '7') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'mobo';";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'mobo';";
       }
       else if (ptype == '8') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'psu';";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'psu';";
       }
       else if (ptype == '9') {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'storage';";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'storage';";
       } else {
-        sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product;";
       }
     } else {
-      sql = "SELECT model_no, name, manufacture, retail_price, stock_qtty FROM Product;";
+      sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product;";
     }
 
     if (num != 0) {
@@ -420,6 +420,17 @@ app.post('/filter', (req, res) => {
 // selecting products in inventory by searched model number
 app.post('/search', (req, res) => {  
   res.status(200).json({num: req.body.num});
+});
+
+// deleting products from the inventory page
+app.post('/delete', (req, res) => {  
+  res.status(200).json();
+  sql = `DELETE FROM Product WHERE model_no = $modelno;`
+  db.run(sql, {$modelno: req.body.values}, function (err) {
+    if(err) {
+      console.error(err.message);
+    }
+  });
 });
 
 const port = 3000;

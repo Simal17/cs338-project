@@ -61,6 +61,7 @@ export class InventoryComponent {
   private apiUrl = "http://localhost:3000/newproduct";
   private apiUrl2 = "http://localhost:3000/filter";
   private apiUrl3 = "http://localhost:3000/search";
+  private apiUrl4 = "http://localhost:3000/delete";
 
   loadData(ptype?: number, model_no?: number, manufacture?: string): void {
     let params = new HttpParams();
@@ -208,6 +209,14 @@ export class InventoryComponent {
 
   deleteProduct(item: any): void {
     const deleteItem = item.model_no;
+    console.log(item.model_no);
+    this.http
+        .post(this.apiUrl4, deleteItem, null, {
+          context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+        })
+        .subscribe((res) => {
+          console.log("Deleted Successfully", res.msg);
+        });
   }
 
   addNewProduct(): void {
