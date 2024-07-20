@@ -17,7 +17,12 @@
   </button>
 </ng-template>
 <button nz-button nzType="primary" (click)="openFilter()">Apply Filter</button>
-<st #st [widthMode]="{ type: 'strict' }" [columns]="columns" [data]="data" />
+<st
+  #st
+  [widthMode]="{ type: 'strict' }"
+  [columns]="columns"
+  [data]="this.data"
+/>
 @if (filterModal) {
   <div class="edit-page-overlay">
     <div class="modal">
@@ -88,6 +93,19 @@
     </div>
   </div>
 }
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="detailModal"
+  nzPlacement="right"
+  nzTitle="Product Detail"
+  (nzOnClose)="detailModal = false"
+>
+  <ng-container *nzDrawerContent>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+  </ng-container>
+</nz-drawer>
 @if (newProductModal) {
   <div class="edit-page-overlay">
     <div class="modal">
@@ -296,6 +314,7 @@
 }
 
 <ng-template #buttons let-item style="padding: 0">
+  <a nz-button nzType="link" (click)="viewDetail(item)">Detail</a>
   <button
     nz-button
     nzType="primary"

@@ -17,7 +17,12 @@ import {
   NonNullableFormBuilder,
   Validators,
 } from "@angular/forms";
-import { FORMITEMS, listOfPType, ProductDetail, ProductInfo } from "./interface";
+import {
+  FORMITEMS,
+  listOfPType,
+  ProductDetail,
+  ProductInfo,
+} from "./interface";
 
 @Component({
   selector: "app-inventory",
@@ -35,6 +40,8 @@ export class InventoryComponent {
     index: number;
     column: STColumn;
   }>;
+  detailModal = false;
+  detailItem = undefined;
   newProductModal = false;
   filterModal = false;
   filterPtype = "";
@@ -100,7 +107,6 @@ export class InventoryComponent {
       (data) => {
         this.data = data; // Assign the received data to the property
         this.st?.reload();
-        console.log(this.data[0]);
       },
       (error) => {
         console.error("There was an error retrieving data:", error);
@@ -154,7 +160,7 @@ export class InventoryComponent {
         sort: true,
       },
       {
-        width: "120px",
+        width: "180px",
         render: this.buttons,
       },
     ];
@@ -182,6 +188,7 @@ export class InventoryComponent {
     this.loadData();
     this.performeSearch();
     this.filterForm.reset();
+    this.filterPtype = "";
   }
 
   openFilter(): void {
@@ -196,7 +203,13 @@ export class InventoryComponent {
     this.filterForm.patchValue({ ptype: this.filterPtype });
 
     // get max price based on this.filterPtype then update this.prangeMax
-    this.prangeMax
+    this.prangeMax;
+  }
+
+  viewDetail(item: any): void {
+    this.detailModal = true;
+    this.detailItem = item;
+    //get the item detail
   }
 
   openEditor(item: any): void {
@@ -210,16 +223,16 @@ export class InventoryComponent {
 
   deleteProduct(item: any): void {
     const deleteItem = {
-      modelNo: item.model_no
+      modelNo: item.model_no,
     };
     console.log(item.model_no);
     this.http
-        .post(this.apiUrl4, deleteItem, null, {
-          context: new HttpContext().set(ALLOW_ANONYMOUS, true),
-        })
-        .subscribe((res) => {
-          console.log("Deleted Successfully!");
-        });
+      .post(this.apiUrl4, deleteItem, null, {
+        context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+      })
+      .subscribe((res) => {
+        console.log("Deleted Successfully!");
+      });
   }
 
   addNewProduct(): void {
@@ -270,12 +283,13 @@ export class InventoryComponent {
     if (modalType === "filterModal") {
       this.filterModal = false;
       this.filterForm.reset();
+      this.filterPtype = "";
     } else if (modalType === "newProductModal") {
       this.newProductModal = false;
       this.newProductForm.reset();
     } else {
       this.editModal = false;
-      this.editPriceForm.reset();
+      this.editPriceForm.removeControl("retail_price");
     }
   }
 
@@ -318,10 +332,10 @@ export class InventoryComponent {
       }
     } else {
       if (this.editPriceForm.valid) {
-        this.editProduct.retail_price = (this.editPriceForm.controls as any)["retail_price"].value;
+        this.editProduct.retail_price = (this.editPriceForm.controls as any)[
+          "retail_price"
+        ].value;
         const product = this.editProduct;
-        console.log(product);
-
         this.http
           .post(this.apiUrl5, product, null, {
             context: new HttpContext().set(ALLOW_ANONYMOUS, true),
@@ -330,7 +344,8 @@ export class InventoryComponent {
             console.log("Product edited successfully!");
           });
         this.editModal = false;
-        this.editPriceForm.reset();
+        this.editPriceForm.removeControl("retail_price");
+        this.loadData();
       } else {
         Object.values(this.editPriceForm.controls).forEach((control) => {
           if (control.invalid) {
