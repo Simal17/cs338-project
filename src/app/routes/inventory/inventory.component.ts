@@ -62,6 +62,7 @@ export class InventoryComponent {
   private apiUrl2 = "http://localhost:3000/filter";
   private apiUrl3 = "http://localhost:3000/search";
   private apiUrl4 = "http://localhost:3000/del";
+  private apiUrl5 = "http://localhost:3000/price";
 
   loadData(ptype?: number, model_no?: number, manufacture?: string): void {
     let params = new HttpParams();
@@ -286,7 +287,7 @@ export class InventoryComponent {
           context: new HttpContext().set(ALLOW_ANONYMOUS, true),
         })
         .subscribe((res) => {
-          console.log("Filtered Successfully:", res.msg);
+          console.log("Filtered Successfully! Max Price:", res.price);
           this.loadData(res.ptype, undefined, res.manufacture);
         });
       this.filterModal = false;
@@ -321,13 +322,13 @@ export class InventoryComponent {
         const product = this.editProduct;
         console.log(product);
 
-        // this.http
-        //   .post(this.apiUrl, product, null, {
-        //     context: new HttpContext().set(ALLOW_ANONYMOUS, true),
-        //   })
-        //   .subscribe((res) => {
-        //     console.log("Product saved successfully:", res.msg);
-        //   });
+        this.http
+          .post(this.apiUrl5, product, null, {
+            context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+          })
+          .subscribe((res) => {
+            console.log("Product edited successfully!");
+          });
         this.editModal = false;
         this.editPriceForm.reset();
       } else {

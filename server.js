@@ -419,8 +419,40 @@ app.post('/newproduct', (req, res) => {
 });
 
 // selecting products in inventory by product type
-app.post('/filter', (req, res) => {  
-  res.status(200).json({msg: 'Yes', ptype: req.body.ptype, manufacture: req.body.manufacture});
+let prodtype = '';
+app.post('/filter', (req, res) => {
+  if (req.body.ptype == 1) {
+    prodtype = 'case';
+  } else if(req.body.ptype == 2) {
+    prodtype = 'cpu_cooler';
+  } else if(req.body.ptype == 3) {
+    prodtype = 'cpu';
+  } else if(req.body.ptype == 4) {
+    prodtype = 'gpu';
+  } else if(req.body.ptype == 5) {
+    prodtype = 'memory';
+  } else if(req.body.ptype == 7) {
+    prodtype = 'mobo';
+  } else if(req.body.ptype == 8) {
+    prodtype = 'psu';
+  } else if(req.body.ptype == 9) {
+    prodtype = 'storage';
+  }
+  db.all("Select MAX(retail_price) as price FROM Product where ptype=$ptype", {
+    $ptype: prodtype
+  },
+  (err, rows) => {
+    if (rows.length == 1) {
+      rows.forEach((row) => {
+          console.log(row);
+          return res.status(200).json({price: row.price, ptype: req.body.ptype, manufacture: req.body.manufacture});
+      })
+    }
+
+    else {
+      res.status(200).json({msg: 'Yes', ptype: req.body.ptype, manufacture: req.body.manufacture});
+    }
+  })
 });
 
 // selecting products in inventory by searched model number
@@ -433,6 +465,17 @@ app.post('/del', (req, res) => {
   res.status(200).json();
   sql = `DELETE FROM Product WHERE model_no = $modelno;`
   db.run(sql, {$modelno: req.body.modelNo}, function (err) {
+    if(err) {
+      console.error(err.message);
+    }
+  });
+});
+
+// editing products from the inventory page
+app.post('/price', (req, res) => {  
+  res.status(200).json();
+  sql = `UPDATE Product SET retail_price = $retailprice WHERE model_no = $modelno;`
+  db.run(sql, {$modelno: req.body.model_no, $retailprice: req.body.retail_price}, function (err) {
     if(err) {
       console.error(err.message);
     }
