@@ -19,24 +19,32 @@ export class DashboardComponent {
   manufactureData: G2PieData[] = [];
   data: any[] = [];
   ngOnInit(): void {
-    this.manufactureData = [
-      {
-        x: 'First Manufacture',
-        y: 80
+    this.dataService.getDashData().subscribe(
+      (data) => {
+        this.manufactureData = data; // Assign the received data to the property
       },
-      {
-        x: 'Second',
-        y: 10
-      },
-      {
-        x: 'Third',
-        y: 5
-      },
-      {
-        x: 'Rest',
-        y: 5
+      (error) => {
+        console.error("There was an error retrieving data:", error);
       }
-    ];
+    );
+    // this.manufactureData = [
+    //   {
+    //     x: 'First Manufacture',
+    //     y: 80
+    //   },
+    //   {
+    //     x: 'Second',
+    //     y: 10
+    //   },
+    //   {
+    //     x: 'Third',
+    //     y: 5
+    //   },
+    //   {
+    //     x: 'Rest',
+    //     y: 5
+    //   }
+    // ];
 
   }
 

@@ -18,7 +18,8 @@ Query executed successfully.
     "manufacture": "NZXT",
     "retail_price": 101.99,
     "stock_qtty": 54,
-    "tdp": 0
+    "tdp": 0,
+    "ProdType": null
   }
 ]
 [
@@ -33,20 +34,48 @@ Query executed successfully.
   }
 ]
 Query executed successfully.
-Query executed successfully.
+Error: SQLITE_CONSTRAINT: UNIQUE constraint failed: Memory.model_no
 [
   {
-    "model_no": 10029,
+    "model_no": 20008,
     "name": "2TB PCIe NVMe",
     "manufacture": "Samsung",
     "retail_price": 269.99,
     "stock_qtty": 56,
-    "tdp": 0
+    "tdp": 0,
+    "ProdType": null
+  },
+  {
+    "model_no": 20009,
+    "name": "2TB PCIe NVMe",
+    "manufacture": "Samsung",
+    "retail_price": 269.99,
+    "stock_qtty": 56,
+    "tdp": 0,
+    "ProdType": null
+  },
+  {
+    "model_no": 20010,
+    "name": "2TB PCIe NVMe",
+    "manufacture": "Samsung",
+    "retail_price": 269.99,
+    "stock_qtty": 56,
+    "tdp": 0,
+    "ProdType": null
+  },
+  {
+    "model_no": 20011,
+    "name": "2TB PCIe NVMe",
+    "manufacture": "Samsung",
+    "retail_price": 269.99,
+    "stock_qtty": 56,
+    "tdp": 0,
+    "ProdType": null
   }
 ]
 [
   {
-    "model_no": 10029,
+    "model_no": 20008,
     "type": "ddr5",
     "speed": 8000,
     "kit_size": 2,
@@ -66,12 +95,13 @@ Query executed successfully.
 []
 [
   {
-    "model_no": 10001,
+    "model_no": 20001,
     "name": "Ryzen 7 7800X3D",
     "manufacture": "AMD",
     "retail_price": 339,
     "stock_qtty": 18,
     "tdp": 120,
+    "ProdType": "cpu",
     "core_count": 8,
     "core_clock": 4.2,
     "boost_clock": 5,
@@ -79,12 +109,13 @@ Query executed successfully.
     "socket": "AM5"
   },
   {
-    "model_no": 10002,
+    "model_no": 20002,
     "name": "Ryzen 5 7600X",
     "manufacture": "AMD",
     "retail_price": 204.99,
     "stock_qtty": 38,
     "tdp": 105,
+    "ProdType": "cpu",
     "core_count": 6,
     "core_clock": 4.7,
     "boost_clock": 5.3,
@@ -92,12 +123,13 @@ Query executed successfully.
     "socket": "AM5"
   },
   {
-    "model_no": 10003,
+    "model_no": 20003,
     "name": "Core i9-14900K",
     "manufacture": "Intel",
     "retail_price": 544.99,
     "stock_qtty": 12,
     "tdp": 125,
+    "ProdType": "cpu",
     "core_count": 24,
     "core_clock": 3.2,
     "boost_clock": 6,
@@ -105,17 +137,32 @@ Query executed successfully.
     "socket": "LGA1700"
   },
   {
-    "model_no": 10004,
+    "model_no": 20004,
     "name": "Core i7-14700K",
     "manufacture": "Intel",
     "retail_price": 399.99,
     "stock_qtty": 34,
     "tdp": 125,
+    "ProdType": "cpu",
     "core_count": 20,
     "core_clock": 3.4,
     "boost_clock": 5.6,
     "graphics": "Intel UHD Graphics 770",
     "socket": "LGA1700"
+  },
+  {
+    "model_no": 20007,
+    "name": "cpu test",
+    "manufacture": "tester",
+    "retail_price": 234,
+    "stock_qtty": 123,
+    "tdp": 12,
+    "ProdType": "cpu",
+    "core_count": 12,
+    "core_clock": 1,
+    "boost_clock": 1,
+    "graphics": "1",
+    "socket": "1"
   }
 ]
 Query executed successfully.
@@ -126,7 +173,8 @@ Query executed successfully.
     "manufacture": "NZXT",
     "retail_price": 12.99,
     "stock_qtty": 66,
-    "tdp": 0
+    "tdp": 0,
+    "ProdType": null
   }
 ]
 Query executed successfully.
@@ -137,7 +185,8 @@ Query executed successfully.
     "manufacture": "NZXT",
     "retail_price": 159.99,
     "stock_qtty": 66,
-    "tdp": 0
+    "tdp": 0,
+    "ProdType": null
   }
 ]
 [
@@ -149,6 +198,7 @@ Query executed successfully.
     "retail_price": 169.99,
     "stock_qtty": 18,
     "tdp": 0,
+    "ProdType": null,
     "type": null,
     "color": null,
     "psu": null,
@@ -185,48 +235,4 @@ Query executed successfully.
     "interface": null
   }
 ]
-[
-  {
-    "Product_ID": 10004,
-    "model_no": null,
-    "name": "Core i7-14700K",
-    "manufacture": "Intel",
-    "retail_price": 399.99,
-    "stock_qtty": 34,
-    "tdp": 125,
-    "type": null,
-    "color": null,
-    "psu": null,
-    "side_panel": null,
-    "external_volume": null,
-    "internal_35_bays": null,
-    "rpm_low": null,
-    "rpm_high": null,
-    "noise_level": null,
-    "water_cooled": null,
-    "core_count": 20,
-    "core_clock": null,
-    "boost_clock": null,
-    "graphics": "Intel UHD Graphics 770",
-    "socket": null,
-    "chipset": null,
-    "memory_size": null,
-    "memory_type": null,
-    "speed": null,
-    "kit_size": null,
-    "size_per_stick": null,
-    "first_word_latency": null,
-    "cas_latency": null,
-    "ram_slots": null,
-    "storage_slots": null,
-    "has_wifi": null,
-    "efficiency": null,
-    "wattage": null,
-    "modular": null,
-    "capacity": null,
-    "price_per_gb": null,
-    "cache": null,
-    "form_factor": null,
-    "interface": null
-  }
-]
+[]

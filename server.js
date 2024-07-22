@@ -141,6 +141,17 @@ app.use(cors({
     }
   });
 
+// dashboard page
+app.get('/dashdata', (req, res) => {
+  sql = "SELECT manufacture, COUNT(*) AS maxvalues FROM Product GROUP BY manufacture ORDER BY maxvalues DESC LIMIT 10;";
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    console.log(rows);
+    res.send(JSON.stringify(rows));
+  });
+});
 
 // login feature
 app.post('/auth/login', (req, res) => {
