@@ -202,7 +202,7 @@ export class InventoryComponent {
 
   changeFilterType(): void {
     this.filterForm.patchValue({ ptype: this.filterPtype });
-
+    console.log()
     // get max price based on this.filterPtype then update this.prangeMax
     this.prangeMax;
   }
