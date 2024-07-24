@@ -18,15 +18,31 @@ export class DashboardComponent {
   columns: STColumn<any>[] = [];
   manufactureData: G2PieData[] = [];
   data: any[] = [];
+  totalProducts: number = 0;
   ngOnInit(): void {
     this.dataService.getDashData().subscribe(
-      (data) => {
-        this.manufactureData = data; // Assign the received data to the property
+      (data2) => {
+        this.data = data2.map(item => ({
+          x: item.x,
+          y: item.y
+        }));// Assign the received data to the property
+      
+      this.totalProducts = 0;
+      for (let i of this.data) {
+        this.totalProducts += i.y;
+      }
+
+      this.manufactureData = this.data.map(item => ({
+        x: item.x,
+        y: Math.round((item.y / this.totalProducts)*100)
+      }));
+      console.log(this.manufactureData);
       },
       (error) => {
         console.error("There was an error retrieving data:", error);
       }
     );
+
     // this.manufactureData = [
     //   {
     //     x: 'First Manufacture',
@@ -45,7 +61,6 @@ export class DashboardComponent {
     //     y: 5
     //   }
     // ];
-
   }
 
 }

@@ -21,7 +21,7 @@ db.run('PRAGMA foreign_keys = ON;', (err) => {
   }
 });
 
-// inputting data into the DB
+// inputting data into the DB, uncomment for restoring database
 // inputData();
 
 // Updating the Product Type column based on model_no in Product table
@@ -54,8 +54,6 @@ app.use(cors({
     const ptype = req.query.ptype;
     const num = req.query.num;
     const manufacture = req.query.manufacture;
-    console.log(num);
-    console.log(manufacture);
 
     if (num != '0') {
       sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE model_no = $num;";
@@ -143,7 +141,7 @@ app.use(cors({
 
 // dashboard page
 app.get('/dashdata', (req, res) => {
-  sql = "SELECT manufacture, COUNT(*) AS maxvalues FROM Product GROUP BY manufacture ORDER BY maxvalues DESC LIMIT 10;";
+  sql = "SELECT manufacture as x, COUNT(*) AS y FROM Product GROUP BY x ORDER BY y DESC LIMIT 10;";
   db.all(sql, [], (err, rows) => {
     if (err) {
       throw err;
@@ -490,6 +488,39 @@ app.post('/price', (req, res) => {
     if(err) {
       console.error(err.message);
     }
+  });
+});
+
+// view detail for all products on the inventory page
+app.get('/viewdetail', (req, res) => {  
+  const ptype = req.query.ptype;
+  const num = req.query.num;
+  console.log("Hi guys!");
+  console.log(num);
+  console.log(ptype);
+  if (req.query.ptype == 'case') {
+    sql = `SELECT model_no, type, psu, side_panel, external_volume, internal_35_bays FROM ProdCase WHERE model_no = $modelno`;
+  } else if (ptype == 'cpu_cooler') {
+    sql = `SELECT model_no, rpm_low, rpm_high, noise_level, water_cooled FROM CPUCooler WHERE model_no = $modelno`;
+  } else if(ptype == 'cpu') {
+    sql = `SELECT model_no, core_count, core_clock, boost_clock, graphics, socket FROM CPU WHERE model_no = $modelno`;
+  } else if (ptype == 'gpu') {
+    sql = `SELECT model_no, chipset, memory_size, memory_type, core_clock, boost_clock FROM GPU WHERE model_no = $modelno`;
+  } else if (ptype == 'memory') {
+    sql = `SELECT model_no, type, speed, kit_size, size_per_stick, first_word_latency, cas_latency FROM Memory WHERE model_no = $modelno`;
+  } else if (ptype == 'mobo') {
+    sql = `SELECT model_no, socket, ram_slots, storage_slots, has_wifi FROM Motherboard WHERE model_no = $modelno`;
+  } else if (ptype == 'psu') {
+    sql = `SELECT model_no, type, efficiency, wattage, modular FROM PSU WHERE model_no = $modelno`;
+  } else if (ptype == 'storage') {
+    sql = `SELECT model_no, capacity, price_per_gb, type, cache, form_factor, interface FROM Storage WHERE model_no = $modelno`;
+  }
+  db.all(sql, {$modelno: num}, (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    console.log(rows);
+    res.send(JSON.stringify(rows));
   });
 });
 

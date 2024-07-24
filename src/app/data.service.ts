@@ -9,6 +9,7 @@ import { ALLOW_ANONYMOUS } from '@delon/auth';
 export class DataService {
   private dataUrl = 'http://localhost:3000/data';  // The URL to the backend endpoint
   private dataUrl2 = 'http://localhost:3000/dashdata';
+  private dataUrl3 = 'http://localhost:3000/viewdetail';
   constructor(private http: HttpClient) { }
   getData(params: HttpParams): Observable<any[]> {
 
@@ -24,6 +25,16 @@ export class DataService {
 
     return this.http.get<any[]>(this.dataUrl2,        {
       context: new HttpContext().set(ALLOW_ANONYMOUS, true)
+    });    // Fetch data from the backend
+
+  }
+
+   // view details data for each item in the inventory
+   getViewDetail(params: HttpParams): Observable<any[]> {
+
+    return this.http.get<any[]>(this.dataUrl3,        {
+      context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+      params: params
     });    // Fetch data from the backend
 
   }

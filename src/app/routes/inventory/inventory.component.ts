@@ -41,7 +41,7 @@ export class InventoryComponent {
     column: STColumn;
   }>;
   detailModal = false;
-  detailItem = undefined;
+  detailItem: any[] = [];
   newProductModal = false;
   filterModal = false;
   filterPtype = "";
@@ -70,6 +70,7 @@ export class InventoryComponent {
   private apiUrl3 = "http://localhost:3000/search";
   private apiUrl4 = "http://localhost:3000/del";
   private apiUrl5 = "http://localhost:3000/price";
+  private apiUrl6 = "http://localhost:3000/viewdetail";
 
   loadData(ptype?: number, model_no?: number, manufacture?: string): void {
     let params = new HttpParams();
@@ -208,8 +209,22 @@ export class InventoryComponent {
 
   viewDetail(item: any): void {
     this.detailModal = true;
-    this.detailItem = item;
+    console.log(item);
     //get the item detail
+    let params = new HttpParams();
+    params = params.set("ptype", item.ptype);
+    params = params.set("num", item.model_no);
+
+    this.dataService.getViewDetail(params).subscribe(
+      (data) => {
+        this.detailItem = data; // Assign the received data to the property
+        console.log(data);
+        console.log("Opened detail successfully!");
+      },
+      (error) => {
+        console.error("There was an error retrieving data:", error);
+      }
+    );
   }
 
   openEditor(item: any): void {
