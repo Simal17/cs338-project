@@ -24,6 +24,25 @@ db.run('PRAGMA foreign_keys = ON;', (err) => {
 // inputting data into the DB, uncomment for restoring database
 // inputData();
 
+// table for low stock
+
+// sql = "CREATE TABLE LowStock(model_no INT, quantity INT, ptype VARCHAR(100))";
+// db.run(sql);
+
+let counter = 1;
+
+if(counter == 1) {
+  sql = `DELETE FROM LowStock`;
+  db.run(sql);
+  counter = 0;
+
+  sql = `INSERT INTO LowStock(model_no, quantity, ptype)
+        SELECT model_no, stock_qtty as quantity, ptype
+        FROM Product
+        WHERE quantity < 3;`
+  db.run(sql);
+}
+
 // Updating the Product Type column based on model_no in Product table
 sql = `UPDATE Product SET ptype = 
                         CASE 
