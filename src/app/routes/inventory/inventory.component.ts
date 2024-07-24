@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   TemplateRef,
   ViewChild,
@@ -57,7 +58,8 @@ export class InventoryComponent {
   editProduct: ProductInfo = {};
   constructor(
     private dataService: DataService,
-    private fb: NonNullableFormBuilder
+    private fb: NonNullableFormBuilder,
+    private cdr: ChangeDetectorRef
   ) {}
   columns: STColumn<any>[] = [];
   data: any[] = [];
@@ -106,7 +108,8 @@ export class InventoryComponent {
 
     this.dataService.getData(params).subscribe(
       (data) => {
-        this.data = data; // Assign the received data to the property
+        this.data = data;
+        this.cdr.markForCheck();
         this.st?.reload();
       },
       (error) => {
@@ -247,6 +250,7 @@ export class InventoryComponent {
       })
       .subscribe((res) => {
         console.log("Deleted Successfully!");
+        this.loadData();
       });
   }
 
@@ -357,10 +361,10 @@ export class InventoryComponent {
           })
           .subscribe((res) => {
             console.log("Product edited successfully!");
+            this.loadData();
           });
         this.editModal = false;
         this.editPriceForm.removeControl("retail_price");
-        this.loadData();
       } else {
         Object.values(this.editPriceForm.controls).forEach((control) => {
           if (control.invalid) {
