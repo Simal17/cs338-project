@@ -49,94 +49,116 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// query for sending the Product data to inventory page
+// query for sending the Product data to inventory page and includes filtering conditions
   app.get('/data', (req, res) => {
     const ptype = req.query.ptype;
+    let name_ptype;
     const num = req.query.num;
     const manufacture = req.query.manufacture;
+    const plow = req.query.plow;
+    const phigh = req.query.phigh;
+
+    if (ptype == '1') {
+      name_ptype = 'case';
+    }
+    else if (ptype == '2') {
+      name_ptype = 'cpu_cooler';
+    }
+    else if (ptype == '3') {
+      name_ptype = 'cpu';
+    }
+    else if (ptype == '4') {
+      name_ptype = 'gpu';
+    }
+    else if (ptype == '5') {
+      name_ptype = 'memory';
+    }
+    else if (ptype == '7') {
+      name_ptype = 'mobo';
+    }
+    else if (ptype == '8') {
+      name_ptype = 'psu';
+    }
+    else if (ptype == '9') {
+      name_ptype = 'storage';
+    }
 
     if (num != '0') {
       sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE model_no = $num;";
-    } else if (manufacture != "") {
-      if (ptype == '1') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'case' and manufacture = $manufacture;";
-      }
-      else if (ptype == '2') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu_cooler' and manufacture = $manufacture;";
-      }
-      else if (ptype == '3') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu' and manufacture = $manufacture;";
-      }
-      else if (ptype == '4') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'gpu' and manufacture = $manufacture;";
-      }
-      else if (ptype == '5') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'memory' and manufacture = $manufacture;";
-      }
-      else if (ptype == '7') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'mobo' and manufacture = $manufacture;";
-      }
-      else if (ptype == '8') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'psu' and manufacture = $manufacture;";
-      }
-      else if (ptype == '9') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'storage' and manufacture = $manufacture;";
+      console.log(1);
+    } else if (manufacture != "" && plow != '-1' && phigh != '-1') {
+      if(ptype == '0') {
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE manufacture = $manufacture AND retail_price BETWEEN $plow AND $phigh;";
+        console.log(2);
       } else {
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype AND manufacture = $manufacture AND retail_price BETWEEN $plow AND $phigh;";
+        console.log(3);
+      }
+    } else if (manufacture == "" && plow != '-1' && phigh != '-1') {
+      if(ptype == '0') {
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE retail_price BETWEEN $plow AND $phigh;";
+        console.log(4);
+      }
+      else {
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype && retail_price BETWEEN $plow AND $phigh;";
+        console.log(5);
+      }
+    } else if (manufacture != "") {
+      if(ptype == '0') {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE manufacture = $manufacture;";
+        console.log(6);
+      } else {
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype and manufacture = $manufacture;";
+        console.log(7);
       }
     } else if (manufacture == "") {
-      if (ptype == '1') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'case';";
-      }
-      else if (ptype == '2') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu_cooler';";
-      }
-      else if (ptype == '3') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'cpu';";
-      }
-      else if (ptype == '4') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'gpu';";
-      }
-      else if (ptype == '5') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'memory';";
-      }
-      else if (ptype == '7') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'mobo';";
-      }
-      else if (ptype == '8') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'psu';";
-      }
-      else if (ptype == '9') {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = 'storage';";
-      } else {
+      if(ptype == '0') {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product;";
+        console.log(8);
+      }
+      else {
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype;";
+        console.log(9);
       }
     } else {
       sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product;";
+      console.log(10);
     }
 
+    const pars = {};
     if (num != 0) {
-      db.all(sql, {$num: num}, (err, rows) => {
-        if (err) {
-          throw err;
-        }
-        res.send(JSON.stringify(rows));
-      });
+      pars.$num = num;
+    } else if (manufacture != "" && ptype != '0' && plow != '-1' && phigh != '-1') {
+      pars.$manufacture = manufacture;
+      pars.$ptype = name_ptype;
+      pars.$plow = plow;
+      pars.$phigh = phigh;
+    } else if (manufacture != "" && ptype != '0') {
+      pars.$manufacture = manufacture;
+      pars.$ptype = name_ptype;
+    } else if (manufacture != "" && plow != '-1' && phigh != '-1') {
+      pars.$manufacture = manufacture;
+      pars.$plow = plow;
+      pars.$phigh = phigh;
+    } else if (ptype != '0' && plow != '-1' && phigh != '-1') {
+      pars.$ptype = name_ptype;
+      pars.$plow = plow;
+      pars.$phigh = phigh;
+    } else if (plow != '-1' && phigh != '-1') {
+      pars.$plow = plow;
+      pars.$phigh = phigh;
     } else if (manufacture != "") {
-      db.all(sql, {$manufacture: manufacture}, (err, rows) => {
-        if (err) {
-          throw err;
-        }
-        res.send(JSON.stringify(rows));
-      });
-    } else {
-      db.all(sql, [], (err, rows) => {
-        if (err) {
-          throw err;
-        }
-        res.send(JSON.stringify(rows));
-      });
+      pars.$manufacture = manufacture;
+    } else if (ptype != '0') {
+      pars.$ptype = name_ptype;
     }
+
+    db.all(sql, pars, (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      res.send(JSON.stringify(rows));
+    });
   });
 
 // dashboard page
@@ -425,43 +447,6 @@ app.post('/newproduct', (req, res) => {
 
   values = [];
   model_no = null;
-});
-
-// selecting products in inventory by product type
-let prodtype = '';
-app.post('/filter', (req, res) => {
-  if (req.body.ptype == 1) {
-    prodtype = 'case';
-  } else if(req.body.ptype == 2) {
-    prodtype = 'cpu_cooler';
-  } else if(req.body.ptype == 3) {
-    prodtype = 'cpu';
-  } else if(req.body.ptype == 4) {
-    prodtype = 'gpu';
-  } else if(req.body.ptype == 5) {
-    prodtype = 'memory';
-  } else if(req.body.ptype == 7) {
-    prodtype = 'mobo';
-  } else if(req.body.ptype == 8) {
-    prodtype = 'psu';
-  } else if(req.body.ptype == 9) {
-    prodtype = 'storage';
-  }
-  db.all("Select MAX(retail_price) as price FROM Product where ptype=$ptype", {
-    $ptype: prodtype
-  },
-  (err, rows) => {
-    if (rows.length == 1) {
-      rows.forEach((row) => {
-          console.log(row);
-          return res.status(200).json({price: row.price, ptype: req.body.ptype, manufacture: req.body.manufacture});
-      })
-    }
-
-    else {
-      res.status(200).json({msg: 'Yes', ptype: req.body.ptype, manufacture: req.body.manufacture});
-    }
-  })
 });
 
 // selecting products in inventory by searched model number

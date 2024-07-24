@@ -68,42 +68,74 @@ export class InventoryComponent {
   editPriceForm: FormRecord<FormControl<any>> = this.fb.record({});
   private readonly http = inject(_HttpClient);
   private apiUrl = "http://localhost:3000/newproduct";
-  private apiUrl2 = "http://localhost:3000/filter";
   private apiUrl3 = "http://localhost:3000/search";
   private apiUrl4 = "http://localhost:3000/del";
   private apiUrl5 = "http://localhost:3000/price";
   private apiUrl6 = "http://localhost:3000/viewdetail";
 
-  loadData(ptype?: number, model_no?: number, manufacture?: string): void {
+  loadData(ptype?: number, model_no?: number, manufacture?: string, plow?: number, phigh?: number): void {
     let params = new HttpParams();
-    if (
-      ptype !== undefined &&
-      manufacture !== undefined &&
-      model_no !== undefined
-    ) {
+    if (ptype !== undefined && manufacture !== undefined && model_no !== undefined &&
+        phigh !== undefined && plow !== undefined) {
       params = params.set("ptype", ptype);
       params = params.set("num", model_no);
       params = params.set("manufacture", manufacture);
+      params = params.set("plow", plow);
+      params = params.set("phigh", phigh);
+    } else if (ptype !== undefined && manufacture !== undefined && plow !== undefined && phigh !== undefined) {
+      params = params.set("ptype", ptype);
+      params = params.set("num", "0");
+      params = params.set("manufacture", manufacture);
+      params = params.set("plow", plow);
+      params = params.set("phigh", phigh);
     } else if (ptype !== undefined && manufacture !== undefined) {
       params = params.set("ptype", ptype);
       params = params.set("num", "0");
       params = params.set("manufacture", manufacture);
+      params = params.set("plow", "-1");
+      params = params.set("phigh", "-1");
+    } else if (ptype !== undefined && plow !== undefined && phigh !== undefined) {
+      params = params.set("ptype", ptype);
+      params = params.set("num", "0");
+      params = params.set("manufacture", "");
+      params = params.set("plow", plow);
+      params = params.set("phigh", phigh);
+    } else if (manufacture !== undefined && plow !== undefined && phigh !== undefined) {
+      params = params.set("ptype", "0");
+      params = params.set("num", "0");
+      params = params.set("manufacture", manufacture);
+      params = params.set("plow", plow);
+      params = params.set("phigh", phigh);
     } else if (ptype !== undefined) {
       params = params.set("ptype", ptype);
       params = params.set("num", "0");
       params = params.set("manufacture", "");
+      params = params.set("plow", "-1");
+      params = params.set("phigh", "-1");
     } else if (model_no !== undefined) {
       params = params.set("ptype", "0");
       params = params.set("num", model_no);
       params = params.set("manufacture", "");
+      params = params.set("plow", "-1");
+      params = params.set("phigh", "-1");
     } else if (manufacture !== undefined) {
       params = params.set("ptype", "0");
       params = params.set("num", "0");
       params = params.set("manufacture", manufacture);
+      params = params.set("plow", "-1");
+      params = params.set("phigh", "-1");
+    } else if (plow !== undefined && phigh !== undefined) {
+      params = params.set("ptype", "0");
+      params = params.set("num", "0");
+      params = params.set("manufacture", "");
+      params = params.set("plow", plow);
+      params = params.set("phigh", phigh);
     } else {
       params = params.set("ptype", "0");
       params = params.set("num", "0");
       params = params.set("manufacture", "");
+      params = params.set("plow", "-1");
+      params = params.set("phigh", "-1");
     }
 
     this.dataService.getData(params).subscribe(
@@ -119,7 +151,7 @@ export class InventoryComponent {
   }
 
   ngOnInit(): void {
-    this.loadData(undefined, undefined, undefined);
+    this.loadData();
     this.columns = [
       {
         title: "Model NO.",
@@ -180,9 +212,9 @@ export class InventoryComponent {
         .subscribe((res) => {
           console.log("Searched Successfully:", res.num);
           if (res.num == "") {
-            this.loadData(undefined, undefined, undefined);
+            this.loadData();
           } else {
-            this.loadData(undefined, res.num, undefined);
+            this.loadData(undefined, res.num, undefined, undefined, undefined);
           }
         });
   }
@@ -315,14 +347,8 @@ export class InventoryComponent {
   handleSave(modalType: string): void {
     if (modalType === "filterModal") {
       console.log(this.filterForm.value);
-      this.http
-        .post(this.apiUrl2, this.filterForm.value, null, {
-          context: new HttpContext().set(ALLOW_ANONYMOUS, true),
-        })
-        .subscribe((res) => {
-          console.log("Filtered Successfully! Max Price:", res.price);
-          this.loadData(res.ptype, undefined, res.manufacture);
-        });
+      //this.filterForm.value["plow"], this.filterForm.value["phigh"]
+      this.loadData(this.filterForm.value["ptype"], undefined, this.filterForm.value["manufacture"], undefined, undefined);
       this.filterModal = false;
     } else if (modalType === "newProductModal") {
       if (this.newProductForm.valid) {
