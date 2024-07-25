@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, inject } from "@angular/core";
 import { STColumn, STComponent } from "@delon/abc/st";
 import { SFSchema } from "@delon/form";
 import { ModalHelper, _HttpClient } from "@delon/theme";
+import { DataService } from "src/app/data.service"; // Import the data service
 import { SHARED_IMPORTS } from "@shared";
 
 @Component({
@@ -11,21 +12,20 @@ import { SHARED_IMPORTS } from "@shared";
   templateUrl: "./orderview.component.html",
 })
 export class OrderviewComponent implements OnInit {
+  constructor(private dataService: DataService) {}
   private readonly http = inject(_HttpClient);
   private readonly modal = inject(ModalHelper);
   columns: STColumn<any>[] = [];
   data: any[] = [];
   ngOnInit(): void {
-    // this.dataService.getData(params).subscribe(
-    //   (data) => {
-    //     this.data = data;
-    //     this.cdr.markForCheck();
-    //     this.st?.reload();
-    //   },
-    //   (error) => {
-    //     console.error("There was an error retrieving data:", error);
-    //   }
-    // );order_id,buyer_first,buyer_last,titems,email,address,date,status
+    this.dataService.getOrderDetail().subscribe(
+      (data) => {
+        this.data = data;
+      },
+      (error) => {
+        console.error("There was an error retrieving data:", error);
+      }
+    );
 
     this.columns = [
       {
@@ -50,7 +50,7 @@ export class OrderviewComponent implements OnInit {
       },
       {
         title: "Items",
-        index: "items",
+        index: "titems",
         className: "text-left",
         width: "160px",
         sort: true,
@@ -70,7 +70,7 @@ export class OrderviewComponent implements OnInit {
       },
       {
         title: "Order Date",
-        index: "date",
+        index: "order_date",
         className: "text-left",
         sort: true,
       },

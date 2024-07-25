@@ -15,12 +15,6 @@ const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) return console.error(err.message);
 });
 
-db.run('PRAGMA foreign_keys = ON;', (err) => {
-  if (err) {
-    console.error('Error with foreign keys:', err.message);
-  }
-});
-
 // inputting data into the DB, uncomment for restoring database
 // inputData();
 
@@ -221,14 +215,25 @@ app.post('/auth/login', (req, res) => {
 let values = [];
 let model_no;
 app.post('/newproduct', (req, res) => {  
+  db.run('PRAGMA foreign_keys = OFF;', (err) => {
+    if (err) {
+      console.error('Error with foreign keys:', err.message);
+    } else {
+      console.log("pragma off");
+    }
+  });
+
   // motherboard
   if(req.body.ptype == 7) {
+      values = [];
       sql = `INSERT INTO Motherboard(model_no, socket, ram_slots, storage_slots, has_wifi)
              VALUES ((SELECT MAX(model_no) + 1 FROM Motherboard), ?, ?, ?, ?);`
       values.push(req.body.socket, req.body.RAM_slots, req.body.storage_slots, req.body.has_wifi);
       db.run(sql, values, function (err) {
         if(err) {
           console.error(err.message);
+        } else {
+          console.log("Success");
         }
       });
       values = [];
@@ -239,10 +244,10 @@ app.post('/newproduct', (req, res) => {
         }
         else {
           model_no = rows[0].model_no;
+          console.log(model_no);
           sql = `INSERT INTO Product(model_no, name, manufacture, retail_price, stock_qtty, tdp, ptype)
           VALUES (?, ?, ?, ?, ?, ?, ?);`
           values.push(model_no, req.body.pname, req.body.manufacture, req.body.retail_price, req.body.stock_qtty, req.body.tdp, req.body.ptype);
-          console.log(values);
           db.run(sql, values, function (err) {
             if(err) {
               console.error(err.message);
@@ -253,6 +258,7 @@ app.post('/newproduct', (req, res) => {
       });
   // cpu
   } else if (req.body.ptype == 3) {
+      values = [];
       sql = `INSERT INTO CPU(model_no, core_count, core_clock, boost_clock, graphics, socket)
              VALUES ((SELECT MAX(model_no) + 1 FROM CPU), ?, ?, ?, ?, ?);`
       values.push(req.body.core_count, req.body.core_clock, req.body.boost_clock, req.body.graphics, req.body.socket);
@@ -476,6 +482,11 @@ app.post('/search', (req, res) => {
 // deleting products from the inventory page
 app.post('/del', (req, res) => {  
   res.status(200).json();
+  db.run('PRAGMA foreign_keys = ON;', (err) => {
+    if (err) {
+      console.error('Error with foreign keys:', err.message);
+    }
+  });
   sql = `DELETE FROM Product WHERE model_no = $modelno;`
   db.run(sql, {$modelno: req.body.modelNo}, function (err) {
     if(err) {
@@ -499,7 +510,6 @@ app.post('/price', (req, res) => {
 app.get('/viewdetail', (req, res) => {  
   const ptype = req.query.ptype;
   const num = req.query.num;
-  console.log("Hi guys!");
   console.log(num);
   console.log(ptype);
   if (req.query.ptype == 'case') {
@@ -524,6 +534,20 @@ app.get('/viewdetail', (req, res) => {
       throw err;
     }
     console.log(rows);
+    res.send(JSON.stringify(rows));
+  });
+});
+
+// view order details in the order view tab
+app.get('/order', (req, res) => {  
+  const ptype = req.query.ptype;
+  const num = req.query.num;
+  sql = `SELECT order_id,buyer_first,buyer_last,titems,email,address,order_date,status FROM ProductOrder`;
+ 
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      throw err;
+    }
     res.send(JSON.stringify(rows));
   });
 });

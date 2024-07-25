@@ -10,6 +10,7 @@ export class DataService {
   private dataUrl = 'http://localhost:3000/data';  // The URL to the backend endpoint
   private dataUrl2 = 'http://localhost:3000/dashdata';
   private dataUrl3 = 'http://localhost:3000/viewdetail';
+  private dataUrl4 = 'http://localhost:3000/order';
   constructor(private http: HttpClient) { }
   getData(params: HttpParams): Observable<any[]> {
 
@@ -37,5 +38,14 @@ export class DataService {
       params: params
     });    // Fetch data from the backend
 
+  }
+
+  // view order details data in the order view tab
+  getOrderDetail(): Observable<any[]> {
+
+    return this.http.get<any[]>(this.dataUrl4,        {
+      context: new HttpContext().set(ALLOW_ANONYMOUS, true)
+    
+    });    // Fetch data from the backend
   }
 }
