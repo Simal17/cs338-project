@@ -218,8 +218,6 @@ export class UserLoginComponent implements OnDestroy {
       }
     }
 
-    // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
-    // 然一般来说登录请求不需要校验，因此加上 ALLOW_ANONYMOUS 表示不触发用户 Token 校验
     this.loading = true;
     this.cdr.detectChanges();
     this.http
@@ -254,10 +252,9 @@ export class UserLoginComponent implements OnDestroy {
         const user: any = {
           name: res.name,
           avatar: './assets/tmp/img/avatar.jpg',
-          email: 'fakeEmail',
-          token: '123456789'
         };
         this.settingsService.setUser(user);
+        this.dataService.setRole(res.role);
         // // res.user.expired = +new Date() + 1000 * 60 * 5;
         // this.tokenService.set(res.user);
         // // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响

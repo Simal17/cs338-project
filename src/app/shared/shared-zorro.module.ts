@@ -21,8 +21,12 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzListModule } from 'ng-zorro-antd/list';
 
 export const SHARED_ZORRO_MODULES = [
+  NzListModule,
+  NzMessageModule,
   NzFlexModule,
   NzFormModule,
   NzGridModule,

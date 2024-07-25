@@ -28,18 +28,12 @@ import { HeaderI18nComponent } from "./widgets/i18n.component";
       [customError]="null"
     >
       <layout-default-header-item direction="right" style="width: 200px;">
-        <div nz-row>
-          <div nz-col nzSpan="12">
-            <span nz-icon nzType="bell" nzTheme="outline"></span>
-          </div>
           <div nz-col nzSpan="12"><header-user /></div>
-        </div>
       </layout-default-header-item>
       <ng-template #contentTpl>
         <router-outlet />
       </ng-template>
     </layout-default>
-    <theme-btn />
   `,
   standalone: true,
   imports: [
@@ -67,7 +61,6 @@ export class LayoutBasicComponent {
     logoCollapsed: `./assets/ComputerSelect338s.png`,
   };
   searchToggleStatus = false;
-  showSettingDrawer = !environment.production;
   get user(): User {
     return this.settings.user;
   }

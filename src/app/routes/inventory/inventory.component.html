@@ -5,7 +5,7 @@
     type="text"
     nz-input
     placeholder="Search by Model Number"
-    [(ngModel)]="searchContent"
+    [(ngModel)]="this.filterNum"
   />
 </nz-input-group>
 <ng-template #suffixIconButton>
@@ -99,9 +99,7 @@
   (nzOnClose)="detailModal = false"
 >
   <ng-container *nzDrawerContent>
-    @for (item of detailInfoItems; track item) {
-      {{ item.label }}
-    } 
+    <div id="object-details" class="object-details"></div>
   </ng-container>
 </nz-drawer>
 @if (newProductModal) {

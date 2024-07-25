@@ -91,3 +91,11 @@ export const FORMITEMS = {
     { attr: "interface", label: "Interface", required: true },
   ],
 };
+
+export const CASEDETAIL2: ProductDetail[] = [
+  { attr: "type", label: "Type", required: true },
+  { attr: "psu", label: "PSU", required: true },
+  { attr: "side_panel", label: "Side Panel", required: true },
+  { attr: "external_volume", label: "External Volume", required: true },
+  { attr: "internal_35_bays", label: "Internal 3.5 Bays", required: true },
+]

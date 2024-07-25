@@ -20,12 +20,14 @@ import {
   UntypedFormBuilder,
 } from "@angular/forms";
 import {
+  CASEDETAIL2,
   FORMITEMS,
   listOfPType,
   ProductDetail,
   ProductInfo,
 } from "./interface";
 import { NzRadioModule } from "ng-zorro-antd/radio";
+import { NzMessageService } from "ng-zorro-antd/message";
 
 @Component({
   selector: "app-inventory",
@@ -44,13 +46,15 @@ export class InventoryComponent {
     column: STColumn;
   }>;
   detailModal = false;
-  detailData: any[] = [];
   detailTitle = "";
-  detailType = "";
   detailInfoItems: ProductDetail[] = [];
   newProductModal = false;
   filterModal = false;
-  filterPtype = "";
+  filterPtype = "0";
+  filterManu = "";
+  filterPrangeMin = -1;
+  filterPrangeMax = -1;
+  filterNum = "";
   editModal = false;
   productInfoItems = FORMITEMS.PRODUCTINFO;
   filterItems = FORMITEMS.FILTERINFO;
@@ -62,7 +66,8 @@ export class InventoryComponent {
   constructor(
     private dataService: DataService,
     private fb: NonNullableFormBuilder,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private message: NzMessageService
   ) {}
   columns: STColumn<any>[] = [];
   data: any[] = [];
@@ -76,19 +81,13 @@ export class InventoryComponent {
   private apiUrl5 = "http://localhost:3000/price";
   private apiUrl6 = "http://localhost:3000/viewdetail";
 
-  loadData(
-    ptype?: number,
-    model_no?: number,
-    manufacture?: string,
-    plow?: number,
-    phigh?: number
-  ): void {
+  loadData(): void {
     let params = new HttpParams();
-    params = params.set("ptype", ptype ? ptype : "0");
-    params = params.set("num", model_no ? model_no : "0");
-    params = params.set("manufacture", manufacture ? manufacture : "");
-    params = params.set("plow", plow ? plow : "-1");
-    params = params.set("phigh", phigh ? phigh : "-1");
+    params = params.set("ptype", this.filterPtype);
+    params = params.set("num", this.filterNum ? this.filterNum : "0");
+    params = params.set("manufacture", this.filterManu);
+    params = params.set("plow", this.filterPrangeMin);
+    params = params.set("phigh", this.filterPrangeMax);
     this.dataService.getData(params).subscribe(
       (data) => {
         this.data = data;
@@ -154,28 +153,25 @@ export class InventoryComponent {
   }
 
   performeSearch(): void {
-    console.log(this.searchContent);
-    if (this.searchContent)
+    if (this.filterNum)
       this.http
-        .post(this.apiUrl3, { num: this.searchContent }, null, {
+        .post(this.apiUrl3, { num: this.filterNum }, null, {
           context: new HttpContext().set(ALLOW_ANONYMOUS, true),
         })
         .subscribe((res) => {
           console.log("Searched Successfully:", res.num);
-          if (res.num == "") {
-            this.loadData();
-          } else {
-            this.loadData(undefined, res.num, undefined, undefined, undefined);
-          }
+          this.loadData();
         });
   }
 
   resetSearch(): void {
-    this.searchContent = "";
+    this.filterNum = "";
+    this.filterPtype = "0";
+    this.filterPrangeMax = -1;
+    this.filterPrangeMin = -1;
+    this.filterManu = "";
     this.loadData();
-    this.performeSearch();
     this.filterForm.reset();
-    this.filterPtype = "";
   }
 
   openFilter(): void {
@@ -191,7 +187,6 @@ export class InventoryComponent {
     let params = new HttpParams();
     params = params.set("ptype", item.ptype);
     params = params.set("num", item.model_no);
-    this.detailType = item.ptype;
     this.dataService.getViewDetail(params).subscribe(
       (data) => {
         this.loadDetailData(data);
@@ -205,27 +200,22 @@ export class InventoryComponent {
   }
 
   loadDetailData(data: any): void {
-    this.detailData = data;
-    this.detailTitle = `Product Detail for product# ${this.detailData[0].model_no}`;
-    if (this.detailType === "case") {
-      this.detailInfoItems = FORMITEMS.CASEDETAIL;
-    } else if (this.detailType === "2") {
-      this.newProductDetailItems = FORMITEMS.CPUCOOLERDETAIL;
-    } else if (this.detailType === "3") {
-      this.newProductDetailItems = FORMITEMS.CPUDETAIL;
-    } else if (this.detailType === "4") {
-      this.newProductDetailItems = FORMITEMS.GPUDETAIL;
-    } else if (this.detailType === "5") {
-      this.newProductDetailItems = FORMITEMS.MEMORYDETAIL;
-    } else if (this.detailType === "7") {
-      this.newProductDetailItems = FORMITEMS.MOBODETAIL;
-    } else if (this.detailType === "8") {
-      this.newProductDetailItems = FORMITEMS.PSUDETAIL;
-    } else if (this.detailType === "9") {
-      this.newProductDetailItems = FORMITEMS.STORAGEDETAIL;
-    }
+    this.detailTitle = `Product Detail for product# ${data[0].model_no}`;
+    const detailData = data[0];
 
-    console.log(this.detailType, this.detailInfoItems)
+    const container = document.getElementById("object-details");
+    container!.innerHTML = "";
+    let isFirst = true;
+    for (const [key, value] of Object.entries(detailData)) {
+      if (isFirst) {
+        isFirst = false;
+        continue; // Skip the first property
+      }
+      const propertyDiv = document.createElement("div");
+      propertyDiv.className = "property";
+      propertyDiv.innerHTML = `<span>${key.replace(/_/g, " ")}:</span> ${value}`;
+      container!.appendChild(propertyDiv);
+    }
   }
 
   openEditor(item: any): void {
@@ -247,7 +237,10 @@ export class InventoryComponent {
         context: new HttpContext().set(ALLOW_ANONYMOUS, true),
       })
       .subscribe((res) => {
-        console.log("Deleted Successfully!");
+        this.message.create(
+          "success",
+          `Product# ${item.model_no} deleted Successfully!`
+        );
         this.loadData();
       });
   }
@@ -299,11 +292,10 @@ export class InventoryComponent {
   handleCancel(modalType: string): void {
     if (modalType === "filterModal") {
       this.filterModal = false;
-      this.filterForm.reset();
-      this.filterPtype = "";
     } else if (modalType === "newProductModal") {
       this.newProductModal = false;
       this.newProductForm.reset();
+      this.newProductDetailItems = [];
     } else {
       this.editModal = false;
       this.editPriceForm.removeControl("retail_price");
@@ -312,31 +304,26 @@ export class InventoryComponent {
 
   handleSave(modalType: string): void {
     if (modalType === "filterModal") {
-      console.log(this.filterForm.value);
+      this.filterManu = (this.filterForm.controls as any)["manufacture"].value;
+      this.filterPtype = (this.filterForm.controls as any)["ptype"].value;
       const prangeFilter = this.filterForm.value["prange"];
-      let plow = -1;
-      let phigh = 99999;
       if (prangeFilter) {
-        console.log(prangeFilter);
+        this.filterPtype = this.filterPtype === "" ? "0" : this.filterPtype;
         if (prangeFilter === "1") {
-          phigh = 300;
+          this.filterPrangeMin = -1;
+          this.filterPrangeMax = 300;
         } else if (prangeFilter === "2") {
-          plow = 301;
-          phigh = 1000;
+          this.filterPrangeMin = 301;
+          this.filterPrangeMax = 1000;
         } else if (prangeFilter === "3") {
-          plow = 1001;
-          phigh = 2000;
+          this.filterPrangeMin = 1001;
+          this.filterPrangeMax = 2000;
         } else {
-          plow = 2000;
+          this.filterPrangeMin = 2000;
+          this.filterPrangeMax = 99999;
         }
       }
-      this.loadData(
-        this.filterForm.value["ptype"],
-        undefined,
-        this.filterForm.value["manufacture"],
-        plow,
-        phigh
-      );
+      this.loadData();
       this.filterModal = false;
     } else if (modalType === "newProductModal") {
       if (this.newProductForm.valid) {
@@ -351,10 +338,14 @@ export class InventoryComponent {
             context: new HttpContext().set(ALLOW_ANONYMOUS, true),
           })
           .subscribe((res) => {
-            console.log("Product saved successfully:", res.msg);
+            this.message.create(
+              "success",
+              `New product added, model no ${res.msg}`
+            );
           });
         this.newProductModal = false;
         this.newProductForm.reset();
+        this.newProductDetailItems = [];
       } else {
         Object.values(this.newProductForm.controls).forEach((control) => {
           if (control.invalid) {
@@ -374,7 +365,10 @@ export class InventoryComponent {
             context: new HttpContext().set(ALLOW_ANONYMOUS, true),
           })
           .subscribe((res) => {
-            console.log("Product edited successfully!");
+            this.message.create(
+              "success",
+              `Product price edited successfully!`
+            );
             this.loadData();
           });
         this.editModal = false;

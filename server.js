@@ -33,7 +33,7 @@ if(counter == 1) {
   sql = `INSERT INTO LowStock(model_no, name, manufacture, quantity, ptype)
         SELECT model_no, name, manufacture, stock_qtty as quantity, ptype
         FROM Product
-        WHERE quantity < 3;`
+        WHERE quantity < 3 LIMIT 200;`
   db.run(sql);
 }
 
@@ -109,7 +109,7 @@ app.use(cors({
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE retail_price BETWEEN $plow AND $phigh;";
       }
       else {
-        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype && retail_price BETWEEN $plow AND $phigh;";
+        sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype AND retail_price BETWEEN $plow AND $phigh;";
       }
     } else if (manufacture != "") {
       if(ptype == '0') {

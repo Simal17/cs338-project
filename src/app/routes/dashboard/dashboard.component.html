@@ -1,3 +1,17 @@
-<h1>Dashboard</h1>
-<g2-bar height="200" [title]="'Top 10 Manufacture'" [data]="manufactureData" />
+<h1>Welcome to the Dashboard {{ this.userrole }}</h1>
+@if (this.userrole === "manager") {
+    <g2-bar height="200" [title]="'Top 10 Manufacture'" [data]="manufactureData" />
+} @else {
+    <nz-list nzBordered nzHeader="Low on Stock warning for products with less than 3 in stock">
+        <cdk-virtual-scroll-viewport itemSize="50" class="container">
+          <nz-list-item *cdkVirtualFor="let item of warningData">
+            <span nz-typography>{{item.model_no}}</span>
+            <span nz-typography>{{item.name}}</span>
+            <span nz-typography>{{item.quantity}}</span>
+          </nz-list-item>
+        </cdk-virtual-scroll-viewport>
+      </nz-list>
+      
+}
+
 
