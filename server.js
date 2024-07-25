@@ -189,14 +189,14 @@ app.get('/lowstock', (req, res) => {
 // login feature
 app.post('/auth/login', (req, res) => {
   const {type, userName, password} = req.body;
-  db.all("Select fname, pwd FROM User where user_id=$user", {
+  db.all("Select fname, pwd, role FROM Users where user_id=$user", {
     $user: userName
   },
   (err, rows) => {
     if (rows.length == 1) {
       rows.forEach((row) => {
         if(row.pwd == password) {
-          return res.status(200).json({msg: 'ok', name: row.fname});
+          return res.status(200).json({msg: 'ok', name: row.fname, role: row.role});
         }
         else {
           return res.status(400).send('Incorrect Password.')
