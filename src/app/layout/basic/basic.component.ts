@@ -35,15 +35,6 @@ import { HeaderI18nComponent } from "./widgets/i18n.component";
           <div nz-col nzSpan="12"><header-user /></div>
         </div>
       </layout-default-header-item>
-      <!-- <ng-template #asideUserTpl>
-        <div nz-dropdown nzTrigger="click" class="alain-default__aside-user">
-          <nz-avatar class="alain-default__aside-user-avatar" [nzSrc]="user.avatar" />
-          <div class="alain-default__aside-user-info">
-            <strong>{{ user.name }}</strong>
-            <p class="mb0">{{ user.email }}</p>
-          </div>
-        </div>
-      </ng-template> -->
       <ng-template #contentTpl>
         <router-outlet />
       </ng-template>

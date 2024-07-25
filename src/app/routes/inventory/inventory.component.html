@@ -95,13 +95,13 @@
   [nzClosable]="true"
   [nzVisible]="detailModal"
   nzPlacement="right"
-  nzTitle="Product Detail"
+  [nzTitle]="detailTitle"
   (nzOnClose)="detailModal = false"
 >
   <ng-container *nzDrawerContent>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
+    @for (item of detailInfoItems; track item) {
+      {{ item.label }}
+    } 
   </ng-container>
 </nz-drawer>
 @if (newProductModal) {

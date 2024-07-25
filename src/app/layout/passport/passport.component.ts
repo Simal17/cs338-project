@@ -15,8 +15,7 @@ import { HeaderI18nComponent } from '../basic/widgets/i18n.component';
       <div class="wrap">
         <div class="top">
           <div class="head">
-            <img class="logo" src="./assets/logo-color.svg">
-            <span class="title">NG-ALAIN</span>
+            <img class="logo" src="./assets/ComputerSelect338b.png" style="height: 100px">
           </div>
         </div>
         <router-outlet />
@@ -27,25 +26,5 @@ import { HeaderI18nComponent } from '../basic/widgets/i18n.component';
   standalone: true,
   imports: [RouterOutlet, HeaderI18nComponent, GlobalFooterModule, NzIconModule, ThemeBtnComponent]
 })
-export class LayoutPassportComponent implements OnInit {
-  private tokenService = inject(DA_SERVICE_TOKEN);
-
-  links = [
-    {
-      title: '帮助',
-      href: ''
-    },
-    {
-      title: '隐私',
-      href: ''
-    },
-    {
-      title: '条款',
-      href: ''
-    }
-  ];
-
-  ngOnInit(): void {
-    this.tokenService.clear();
-  }
+export class LayoutPassportComponent{
 }

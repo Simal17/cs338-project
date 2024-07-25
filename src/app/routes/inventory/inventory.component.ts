@@ -17,6 +17,7 @@ import {
   FormControl,
   NonNullableFormBuilder,
   Validators,
+  UntypedFormBuilder,
 } from "@angular/forms";
 import {
   FORMITEMS,
@@ -43,7 +44,10 @@ export class InventoryComponent {
     column: STColumn;
   }>;
   detailModal = false;
-  detailItem: any[] = [];
+  detailData: any[] = [];
+  detailTitle = "";
+  detailType = "";
+  detailInfoItems: ProductDetail[] = [];
   newProductModal = false;
   filterModal = false;
   filterPtype = "";
@@ -80,73 +84,11 @@ export class InventoryComponent {
     phigh?: number
   ): void {
     let params = new HttpParams();
-    // if (ptype !== undefined && manufacture !== undefined && model_no !== undefined &&
-    //     phigh !== undefined && plow !== undefined) {
-    //   params = params.set("ptype", ptype);
-    //   params = params.set("num", model_no);
-    //   params = params.set("manufacture", manufacture);
-    //   params = params.set("plow", plow);
-    //   params = params.set("phigh", phigh);
-    // } else if (ptype !== undefined && manufacture !== undefined && plow !== undefined && phigh !== undefined) {
-    //   params = params.set("ptype", ptype);
-    //   params = params.set("num", "0");
-    //   params = params.set("manufacture", manufacture);
-    //   params = params.set("plow", plow);
-    //   params = params.set("phigh", phigh);
-    // } else if (ptype !== undefined && manufacture !== undefined) {
-    //   params = params.set("ptype", ptype);
-    //   params = params.set("num", "0");
-    //   params = params.set("manufacture", manufacture);
-    //   params = params.set("plow", "-1");
-    //   params = params.set("phigh", "-1");
-    // } else if (ptype !== undefined && plow !== undefined && phigh !== undefined) {
-    //   params = params.set("ptype", ptype);
-    //   params = params.set("num", "0");
-    //   params = params.set("manufacture", "");
-    //   params = params.set("plow", plow);
-    //   params = params.set("phigh", phigh);
-    // } else if (manufacture !== undefined && plow !== undefined && phigh !== undefined) {
-    //   params = params.set("ptype", "0");
-    //   params = params.set("num", "0");
-    //   params = params.set("manufacture", manufacture);
-    //   params = params.set("plow", plow);
-    //   params = params.set("phigh", phigh);
-    // } else if (ptype !== undefined) {
-    //   params = params.set("ptype", ptype);
-    //   params = params.set("num", "0");
-    //   params = params.set("manufacture", "");
-    //   params = params.set("plow", "-1");
-    //   params = params.set("phigh", "-1");
-    // } else if (model_no !== undefined) {
-    //   params = params.set("ptype", "0");
-    //   params = params.set("num", model_no);
-    //   params = params.set("manufacture", "");
-    //   params = params.set("plow", "-1");
-    //   params = params.set("phigh", "-1");
-    // } else if (manufacture !== undefined) {
-    //   params = params.set("ptype", "0");
-    //   params = params.set("num", "0");
-    //   params = params.set("manufacture", manufacture);
-    //   params = params.set("plow", "-1");
-    //   params = params.set("phigh", "-1");
-    // } else if (plow !== undefined && phigh !== undefined) {
-    //   params = params.set("ptype", "0");
-    //   params = params.set("num", "0");
-    //   params = params.set("manufacture", "");
-    //   params = params.set("plow", plow);
-    //   params = params.set("phigh", phigh);
-    // } else {
-    //   params = params.set("ptype", "0");
-    //   params = params.set("num", "0");
-    //   params = params.set("manufacture", "");
-    //   params = params.set("plow", "-1");
-    //   params = params.set("phigh", "-1");
-    // }
     params = params.set("ptype", ptype ? ptype : "0");
     params = params.set("num", model_no ? model_no : "0");
     params = params.set("manufacture", manufacture ? manufacture : "");
     params = params.set("plow", plow ? plow : "-1");
-    params = params.set("phigh", phigh ? phigh: "-1");
+    params = params.set("phigh", phigh ? phigh : "-1");
     this.dataService.getData(params).subscribe(
       (data) => {
         this.data = data;
@@ -246,22 +188,44 @@ export class InventoryComponent {
 
   viewDetail(item: any): void {
     this.detailModal = true;
-    console.log(item);
-    //get the item detail
     let params = new HttpParams();
     params = params.set("ptype", item.ptype);
     params = params.set("num", item.model_no);
-
+    this.detailType = item.ptype;
     this.dataService.getViewDetail(params).subscribe(
       (data) => {
-        this.detailItem = data; // Assign the received data to the property
-        console.log(data);
+        this.loadDetailData(data);
+        this.cdr.markForCheck();
         console.log("Opened detail successfully!");
       },
       (error) => {
         console.error("There was an error retrieving data:", error);
       }
     );
+  }
+
+  loadDetailData(data: any): void {
+    this.detailData = data;
+    this.detailTitle = `Product Detail for product# ${this.detailData[0].model_no}`;
+    if (this.detailType === "case") {
+      this.detailInfoItems = FORMITEMS.CASEDETAIL;
+    } else if (this.detailType === "2") {
+      this.newProductDetailItems = FORMITEMS.CPUCOOLERDETAIL;
+    } else if (this.detailType === "3") {
+      this.newProductDetailItems = FORMITEMS.CPUDETAIL;
+    } else if (this.detailType === "4") {
+      this.newProductDetailItems = FORMITEMS.GPUDETAIL;
+    } else if (this.detailType === "5") {
+      this.newProductDetailItems = FORMITEMS.MEMORYDETAIL;
+    } else if (this.detailType === "7") {
+      this.newProductDetailItems = FORMITEMS.MOBODETAIL;
+    } else if (this.detailType === "8") {
+      this.newProductDetailItems = FORMITEMS.PSUDETAIL;
+    } else if (this.detailType === "9") {
+      this.newProductDetailItems = FORMITEMS.STORAGEDETAIL;
+    }
+
+    console.log(this.detailType, this.detailInfoItems)
   }
 
   openEditor(item: any): void {
