@@ -1,12 +1,17 @@
-import { APP_INITIALIZER, Injectable, Provider, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { DA_SERVICE_TOKEN } from '@delon/auth';
-import { ALAIN_I18N_TOKEN, MenuService, SettingsService, TitleService } from '@delon/theme';
-import { ACLService } from '@delon/acl';
-import { I18NService } from '../i18n/i18n.service';
-import { Observable, zip, of, catchError, map } from 'rxjs';
-import type { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { APP_INITIALIZER, Injectable, Provider, inject } from "@angular/core";
+import { Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import { DA_SERVICE_TOKEN } from "@delon/auth";
+import {
+  ALAIN_I18N_TOKEN,
+  MenuService,
+  SettingsService,
+  TitleService,
+} from "@delon/theme";
+import { ACLService } from "@delon/acl";
+import { I18NService } from "../i18n/i18n.service";
+import { Observable, zip, of, catchError, map } from "rxjs";
+import type { NzSafeAny } from "ng-zorro-antd/core/types";
 
 /**
  * Used for application startup
@@ -17,10 +22,11 @@ export function provideStartup(): Provider[] {
     StartupService,
     {
       provide: APP_INITIALIZER,
-      useFactory: (startupService: StartupService) => () => startupService.load(),
+      useFactory: (startupService: StartupService) => () =>
+        startupService.load(),
       deps: [StartupService],
-      multi: true
-    }
+      multi: true,
+    },
   ];
 }
 
@@ -36,7 +42,7 @@ export class StartupService {
   private i18n = inject<I18NService>(ALAIN_I18N_TOKEN);
   // If http request allows anonymous access, you need to add `ALLOW_ANONYMOUS`:
   // this.httpClient.get('/app', { context: new HttpContext().set(ALLOW_ANONYMOUS, true) })
-  private appData$ = this.httpClient.get('./assets/tmp/app-data.json').pipe(
+  private appData$ = this.httpClient.get("./assets/tmp/app-data.json").pipe(
     catchError((res: NzSafeAny) => {
       console.warn(`StartupService.load: Network request failed`, res);
       setTimeout(() => this.router.navigateByUrl(`/exception/500`));
@@ -57,7 +63,6 @@ export class StartupService {
     this.titleService.suffix = res.app?.name;
   }
 
-  
   private viaHttp(): Observable<void> {
     const defaultLang = this.i18n.defaultLang;
     return zip(this.i18n.loadLangData(defaultLang), this.appData$).pipe(
@@ -69,20 +74,18 @@ export class StartupService {
       })
     );
   }
-  
 
-  
   private viaMockI18n(): Observable<void> {
     const defaultLang = this.i18n.defaultLang;
     return this.i18n.loadLangData(defaultLang).pipe(
-        map((langData: NzSafeAny) => {
-          this.i18n.use(defaultLang, langData);
+      map((langData: NzSafeAny) => {
+        this.i18n.use(defaultLang, langData);
 
-          this.viaMock();
-        })
-      );
+        this.viaMock();
+      })
+    );
   }
-  
+
   private viaMock(): Observable<void> {
     // const tokenData = this.tokenService.get();
     // if (!tokenData.token) {
@@ -92,13 +95,13 @@ export class StartupService {
     // mock
     const app: any = {
       name: `PC Store`,
-      description: `A custome pc parts retail store`
+      description: `A custome pc parts retail store`,
     };
     const user: any = {
-      name: 'Admin',
-      avatar: './assets/tmp/img/avatar.jpg',
-      email: 'cipchk@qq.com',
-      token: '123456789'
+      name: "Admin",
+      avatar: "./assets/tmp/img/avatar.jpg",
+      email: "cipchk@qq.com",
+      token: "123456789",
     };
     console.log(this.settingService.getUser());
     // Application information: including site name, description, year
@@ -110,20 +113,26 @@ export class StartupService {
     // Menu data, https://ng-alain.com/theme/menu
     this.menuService.add([
       {
-        text: 'Main',
+        text: "Main",
         group: true,
         children: [
           {
-            text: 'Dashboard',
-            link: '/dashboard',
-            icon: { type: 'icon', value: 'appstore' }
-          },          {
-            text: 'Inventory',
-            link: '/inventory',
-            icon: { type: 'icon', value: 'appstore' }
+            text: "Dashboard",
+            link: "/dashboard",
+            icon: { type: "icon", value: "appstore" },
           },
-        ]
-      }
+          {
+            text: "Inventory",
+            link: "/inventory",
+            icon: { type: "icon", value: "appstore" },
+          },
+          {
+            text: "Orderview",
+            link: "/orderview",
+            icon: { type: "icon", value: "appstore" },
+          },
+        ],
+      },
     ]);
     // Can be set page suffix title, https://ng-alain.com/theme/title
     this.titleService.suffix = app.name;

@@ -1,4 +1,4 @@
-order_id,buyer_first,buyer_last,titems,email,address,date,status
+order_id,buyer_first,buyer_last,items,email,address,date,status
 1,David,Lee,12193,dl@gmail.com,address1,6/7/2024,1
 1,David,Lee,30938,dl@gmail.com,address1,6/7/2024,1
 1,David,Lee,73979,dl@gmail.com,address1,6/7/2024,1

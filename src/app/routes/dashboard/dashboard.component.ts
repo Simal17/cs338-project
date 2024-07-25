@@ -32,7 +32,5 @@ export class DashboardComponent {
         console.error("There was an error retrieving data:", error);
       }
     );
-
-
   }
 }

@@ -33,9 +33,7 @@
           <nz-form-control>
             <nz-select
               nzPlaceHolder="Please select a product type"
-              [(ngModel)]="filterPtype"
-              [ngModelOptions]="{ standalone: true }"
-              (ngModelChange)="changeFilterType()"
+              formControlName="ptype"
             >
               @for (item of listOfPType; track item) {
                 <nz-option
@@ -57,14 +55,14 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label> Price filter for the type</nz-form-label>
+          <nz-form-label> Price Range</nz-form-label>
           <nz-form-control>
-            <nz-slider
-              nzRange
-              [nzMax]="prangeMax"
-              [(ngModel)]="prange"
-              [ngModelOptions]="{ standalone: true }"
-            ></nz-slider>
+            <nz-radio-group formControlName="prange">
+              <label nz-radio nzValue="1">A</label>
+              <label nz-radio nzValue="2">B</label>
+              <label nz-radio nzValue="3">C</label>
+              <label nz-radio nzValue="4">D</label>
+            </nz-radio-group>
           </nz-form-control>
         </nz-form-item>
       </form>

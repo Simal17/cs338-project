@@ -24,6 +24,7 @@ import {
   ProductDetail,
   ProductInfo,
 } from "./interface";
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: "app-inventory",
@@ -32,7 +33,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 
-  imports: [...SHARED_IMPORTS],
+  imports: [...SHARED_IMPORTS,NzRadioModule],
 })
 export class InventoryComponent {
   @ViewChild("st", { static: false }) st?: STComponent;
@@ -49,8 +50,6 @@ export class InventoryComponent {
   editModal = false;
   productInfoItems = FORMITEMS.PRODUCTINFO;
   filterItems = FORMITEMS.FILTERINFO;
-  prangeMax = 0;
-  prange = [0, 0];
   searchContent = "";
   newProductType = "";
   newProductDetailItems: ProductDetail[] = [];
@@ -137,7 +136,7 @@ export class InventoryComponent {
       params = params.set("plow", "-1");
       params = params.set("phigh", "-1");
     }
-
+    console.log(params)
     this.dataService.getData(params).subscribe(
       (data) => {
         this.data = data;
@@ -233,13 +232,6 @@ export class InventoryComponent {
     this.filterItems.forEach((item) => {
       this.filterForm.addControl(item, this.fb.control(""));
     });
-  }
-
-  changeFilterType(): void {
-    this.filterForm.patchValue({ ptype: this.filterPtype });
-    console.log()
-    // get max price based on this.filterPtype then update this.prangeMax
-    this.prangeMax;
   }
 
   viewDetail(item: any): void {
@@ -347,7 +339,19 @@ export class InventoryComponent {
   handleSave(modalType: string): void {
     if (modalType === "filterModal") {
       console.log(this.filterForm.value);
-      //this.filterForm.value["plow"], this.filterForm.value["phigh"]
+      const prangeFilter = this.filterForm.value["prange"];
+      if (prangeFilter) {
+        console.log(prangeFilter)
+        if (prangeFilter === '1') {
+
+        } else if (prangeFilter === '2') {
+  
+        } else if (prangeFilter === '3') {
+  
+        } else {
+  
+        }
+      }
       this.loadData(this.filterForm.value["ptype"], undefined, this.filterForm.value["manufacture"], undefined, undefined);
       this.filterModal = false;
     } else if (modalType === "newProductModal") {

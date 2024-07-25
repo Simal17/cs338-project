@@ -72,8 +72,8 @@ import { HeaderI18nComponent } from "./widgets/i18n.component";
 export class LayoutBasicComponent {
   private readonly settings = inject(SettingsService);
   options: LayoutDefaultOptions = {
-    logoExpanded: `./assets/logo-full.svg`,
-    logoCollapsed: `./assets/logo.svg`,
+    logoExpanded: `./assets/ComputerSelect338.png`,
+    logoCollapsed: `./assets/ComputerSelect338s.png`,
   };
   searchToggleStatus = false;
   showSettingDrawer = !environment.production;
