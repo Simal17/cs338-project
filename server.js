@@ -19,10 +19,10 @@ const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
 // inputData();
 
 // table for low stock
-
-// sql = "CREATE TABLE LowStock(model_no INT, quantity INT, ptype VARCHAR(100))";
+// sql = "CREATE TABLE LowStock(model_no INT, name VARCHAR(30), manufacture VARCHAR(30), quantity INT, ptype VARCHAR(30))";
 // db.run(sql);
 
+// adding data to the low stock table
 let counter = 1;
 
 if(counter == 1) {
@@ -30,8 +30,8 @@ if(counter == 1) {
   db.run(sql);
   counter = 0;
 
-  sql = `INSERT INTO LowStock(model_no, quantity, ptype)
-        SELECT model_no, stock_qtty as quantity, ptype
+  sql = `INSERT INTO LowStock(model_no, name, manufacture, quantity, ptype)
+        SELECT model_no, name, manufacture, stock_qtty as quantity, ptype
         FROM Product
         WHERE quantity < 3;`
   db.run(sql);
@@ -98,44 +98,34 @@ app.use(cors({
 
     if (num != '0') {
       sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE model_no = $num;";
-      console.log(1);
     } else if (manufacture != "" && plow != '-1' && phigh != '-1') {
       if(ptype == '0') {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE manufacture = $manufacture AND retail_price BETWEEN $plow AND $phigh;";
-        console.log(2);
       } else {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype AND manufacture = $manufacture AND retail_price BETWEEN $plow AND $phigh;";
-        console.log(3);
       }
     } else if (manufacture == "" && plow != '-1' && phigh != '-1') {
       if(ptype == '0') {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE retail_price BETWEEN $plow AND $phigh;";
-        console.log(4);
       }
       else {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype && retail_price BETWEEN $plow AND $phigh;";
-        console.log(5);
       }
     } else if (manufacture != "") {
       if(ptype == '0') {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE manufacture = $manufacture;";
-        console.log(6);
       } else {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype and manufacture = $manufacture;";
-        console.log(7);
       }
     } else if (manufacture == "") {
       if(ptype == '0') {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product;";
-        console.log(8);
       }
       else {
         sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product WHERE ptype = $ptype;";
-        console.log(9);
       }
     } else {
       sql = "SELECT model_no, ptype, name, manufacture, retail_price, stock_qtty FROM Product;";
-      console.log(10);
     }
 
     const pars = {};
@@ -181,7 +171,17 @@ app.get('/dashdata', (req, res) => {
     if (err) {
       throw err;
     }
-    console.log(rows);
+    res.send(JSON.stringify(rows));
+  });
+});
+
+// dashboard page
+app.get('/lowstock', (req, res) => {
+  sql = "SELECT model_no, name, manufacture, quantity, ptype FROM LowStock;";
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      throw err;
+    }
     res.send(JSON.stringify(rows));
   });
 });
@@ -289,6 +289,7 @@ app.post('/newproduct', (req, res) => {
       });
   // cpu cooler
   } else if (req.body.ptype == 2) {
+      values = [];
       sql = `INSERT INTO CPUCooler(model_no, rpm_low, rpm_high, noise_level, water_cooled)
              VALUES ((SELECT MAX(model_no) + 1 FROM CPUCooler), ?, ?, ?, ?);`
       values.push(req.body.RPM_low, req.body.RPM_high, req.body.noise_level, req.body.water_cooled);
@@ -319,6 +320,7 @@ app.post('/newproduct', (req, res) => {
       });
   // case
   } else if (req.body.ptype == 1) {
+      values = [];
       sql = `INSERT INTO ProdCase(model_no, type, psu, side_panel, external_volume, internal_35_bays)
             VALUES ((SELECT MAX(model_no) + 1 FROM ProdCase), ?, ?, ?, ?, ?);`
       values.push(req.body.type, req.body.psu, req.body.side_panel, req.body.external_volume, req.body.internal_35_bays);
@@ -349,6 +351,7 @@ app.post('/newproduct', (req, res) => {
       });
   // gpu
   } else if (req.body.ptype == 4) {
+      values = [];
       sql = `INSERT INTO GPU(model_no, chipset, memory_size, memory_type, core_clock, boost_clock)
              VALUES ((SELECT MAX(model_no) + 1 FROM GPU), ?, ?, ?, ?, ?);`
       values.push(req.body.chipset, req.body.memory, req.body.memory_type, req.body.core_clock, req.body.boost_clock);
@@ -379,6 +382,7 @@ app.post('/newproduct', (req, res) => {
       });
   // memory
   } else if (req.body.ptype == 5) {
+      values = [];
       sql = `INSERT INTO Memory(model_no, type, speed, kit_size, size_per_stick, first_word_latency, cas_latency)
             VALUES ((SELECT MAX(model_no) + 1 FROM Memory), ?, ?, ?, ?, ?, ?);`
       values.push(req.body.type, req.body.speed, req.body.kit_size, req.body.size_per_stick, req.body.first_word_latency, req.body.cas_latency);
@@ -409,6 +413,7 @@ app.post('/newproduct', (req, res) => {
       });
   // psu
   } else if (req.body.ptype == 8) {
+    values = [];
     sql = `INSERT INTO PSU(model_no, type, efficiency, wattage, modular)
            VALUES ((SELECT MAX(model_no) + 1 FROM PSU), ?, ?, ?, ?);`
     values.push(req.body.type, req.body.efficiency, req.body.wattage, req.body.modular);
@@ -439,6 +444,7 @@ app.post('/newproduct', (req, res) => {
     });
   // storage
   } else if (req.body.ptype == 9) {
+    values = [];
     sql = `INSERT INTO Storage(model_no, capacity, price_per_gb, type, cache, form_factor, interface)
            VALUES ((SELECT MAX(model_no) + 1 FROM Storage), ?, ?, ?, ?, ?, ?);`
     values.push(req.body.capacity, req.body.price_per_gb, req.body.type, req.body.cache, req.body.form_factor, req.body.interface);
