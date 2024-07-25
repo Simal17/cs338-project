@@ -24,7 +24,7 @@ import {
   ProductDetail,
   ProductInfo,
 } from "./interface";
-import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzRadioModule } from "ng-zorro-antd/radio";
 
 @Component({
   selector: "app-inventory",
@@ -33,7 +33,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 
-  imports: [...SHARED_IMPORTS,NzRadioModule],
+  imports: [...SHARED_IMPORTS, NzRadioModule],
 })
 export class InventoryComponent {
   @ViewChild("st", { static: false }) st?: STComponent;
@@ -72,71 +72,81 @@ export class InventoryComponent {
   private apiUrl5 = "http://localhost:3000/price";
   private apiUrl6 = "http://localhost:3000/viewdetail";
 
-  loadData(ptype?: number, model_no?: number, manufacture?: string, plow?: number, phigh?: number): void {
+  loadData(
+    ptype?: number,
+    model_no?: number,
+    manufacture?: string,
+    plow?: number,
+    phigh?: number
+  ): void {
     let params = new HttpParams();
-    if (ptype !== undefined && manufacture !== undefined && model_no !== undefined &&
-        phigh !== undefined && plow !== undefined) {
-      params = params.set("ptype", ptype);
-      params = params.set("num", model_no);
-      params = params.set("manufacture", manufacture);
-      params = params.set("plow", plow);
-      params = params.set("phigh", phigh);
-    } else if (ptype !== undefined && manufacture !== undefined && plow !== undefined && phigh !== undefined) {
-      params = params.set("ptype", ptype);
-      params = params.set("num", "0");
-      params = params.set("manufacture", manufacture);
-      params = params.set("plow", plow);
-      params = params.set("phigh", phigh);
-    } else if (ptype !== undefined && manufacture !== undefined) {
-      params = params.set("ptype", ptype);
-      params = params.set("num", "0");
-      params = params.set("manufacture", manufacture);
-      params = params.set("plow", "-1");
-      params = params.set("phigh", "-1");
-    } else if (ptype !== undefined && plow !== undefined && phigh !== undefined) {
-      params = params.set("ptype", ptype);
-      params = params.set("num", "0");
-      params = params.set("manufacture", "");
-      params = params.set("plow", plow);
-      params = params.set("phigh", phigh);
-    } else if (manufacture !== undefined && plow !== undefined && phigh !== undefined) {
-      params = params.set("ptype", "0");
-      params = params.set("num", "0");
-      params = params.set("manufacture", manufacture);
-      params = params.set("plow", plow);
-      params = params.set("phigh", phigh);
-    } else if (ptype !== undefined) {
-      params = params.set("ptype", ptype);
-      params = params.set("num", "0");
-      params = params.set("manufacture", "");
-      params = params.set("plow", "-1");
-      params = params.set("phigh", "-1");
-    } else if (model_no !== undefined) {
-      params = params.set("ptype", "0");
-      params = params.set("num", model_no);
-      params = params.set("manufacture", "");
-      params = params.set("plow", "-1");
-      params = params.set("phigh", "-1");
-    } else if (manufacture !== undefined) {
-      params = params.set("ptype", "0");
-      params = params.set("num", "0");
-      params = params.set("manufacture", manufacture);
-      params = params.set("plow", "-1");
-      params = params.set("phigh", "-1");
-    } else if (plow !== undefined && phigh !== undefined) {
-      params = params.set("ptype", "0");
-      params = params.set("num", "0");
-      params = params.set("manufacture", "");
-      params = params.set("plow", plow);
-      params = params.set("phigh", phigh);
-    } else {
-      params = params.set("ptype", "0");
-      params = params.set("num", "0");
-      params = params.set("manufacture", "");
-      params = params.set("plow", "-1");
-      params = params.set("phigh", "-1");
-    }
-    console.log(params)
+    // if (ptype !== undefined && manufacture !== undefined && model_no !== undefined &&
+    //     phigh !== undefined && plow !== undefined) {
+    //   params = params.set("ptype", ptype);
+    //   params = params.set("num", model_no);
+    //   params = params.set("manufacture", manufacture);
+    //   params = params.set("plow", plow);
+    //   params = params.set("phigh", phigh);
+    // } else if (ptype !== undefined && manufacture !== undefined && plow !== undefined && phigh !== undefined) {
+    //   params = params.set("ptype", ptype);
+    //   params = params.set("num", "0");
+    //   params = params.set("manufacture", manufacture);
+    //   params = params.set("plow", plow);
+    //   params = params.set("phigh", phigh);
+    // } else if (ptype !== undefined && manufacture !== undefined) {
+    //   params = params.set("ptype", ptype);
+    //   params = params.set("num", "0");
+    //   params = params.set("manufacture", manufacture);
+    //   params = params.set("plow", "-1");
+    //   params = params.set("phigh", "-1");
+    // } else if (ptype !== undefined && plow !== undefined && phigh !== undefined) {
+    //   params = params.set("ptype", ptype);
+    //   params = params.set("num", "0");
+    //   params = params.set("manufacture", "");
+    //   params = params.set("plow", plow);
+    //   params = params.set("phigh", phigh);
+    // } else if (manufacture !== undefined && plow !== undefined && phigh !== undefined) {
+    //   params = params.set("ptype", "0");
+    //   params = params.set("num", "0");
+    //   params = params.set("manufacture", manufacture);
+    //   params = params.set("plow", plow);
+    //   params = params.set("phigh", phigh);
+    // } else if (ptype !== undefined) {
+    //   params = params.set("ptype", ptype);
+    //   params = params.set("num", "0");
+    //   params = params.set("manufacture", "");
+    //   params = params.set("plow", "-1");
+    //   params = params.set("phigh", "-1");
+    // } else if (model_no !== undefined) {
+    //   params = params.set("ptype", "0");
+    //   params = params.set("num", model_no);
+    //   params = params.set("manufacture", "");
+    //   params = params.set("plow", "-1");
+    //   params = params.set("phigh", "-1");
+    // } else if (manufacture !== undefined) {
+    //   params = params.set("ptype", "0");
+    //   params = params.set("num", "0");
+    //   params = params.set("manufacture", manufacture);
+    //   params = params.set("plow", "-1");
+    //   params = params.set("phigh", "-1");
+    // } else if (plow !== undefined && phigh !== undefined) {
+    //   params = params.set("ptype", "0");
+    //   params = params.set("num", "0");
+    //   params = params.set("manufacture", "");
+    //   params = params.set("plow", plow);
+    //   params = params.set("phigh", phigh);
+    // } else {
+    //   params = params.set("ptype", "0");
+    //   params = params.set("num", "0");
+    //   params = params.set("manufacture", "");
+    //   params = params.set("plow", "-1");
+    //   params = params.set("phigh", "-1");
+    // }
+    params = params.set("ptype", ptype ? ptype : "0");
+    params = params.set("num", model_no ? model_no : "0");
+    params = params.set("manufacture", manufacture ? manufacture : "");
+    params = params.set("plow", plow ? plow : "-1");
+    params = params.set("phigh", phigh ? phigh: "-1");
     this.dataService.getData(params).subscribe(
       (data) => {
         this.data = data;
@@ -340,19 +350,29 @@ export class InventoryComponent {
     if (modalType === "filterModal") {
       console.log(this.filterForm.value);
       const prangeFilter = this.filterForm.value["prange"];
+      let plow = -1;
+      let phigh = 99999;
       if (prangeFilter) {
-        console.log(prangeFilter)
-        if (prangeFilter === '1') {
-
-        } else if (prangeFilter === '2') {
-  
-        } else if (prangeFilter === '3') {
-  
+        console.log(prangeFilter);
+        if (prangeFilter === "1") {
+          phigh = 300;
+        } else if (prangeFilter === "2") {
+          plow = 301;
+          phigh = 1000;
+        } else if (prangeFilter === "3") {
+          plow = 1001;
+          phigh = 2000;
         } else {
-  
+          plow = 2000;
         }
       }
-      this.loadData(this.filterForm.value["ptype"], undefined, this.filterForm.value["manufacture"], undefined, undefined);
+      this.loadData(
+        this.filterForm.value["ptype"],
+        undefined,
+        this.filterForm.value["manufacture"],
+        plow,
+        phigh
+      );
       this.filterModal = false;
     } else if (modalType === "newProductModal") {
       if (this.newProductForm.valid) {
