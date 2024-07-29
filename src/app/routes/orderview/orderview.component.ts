@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, inject } from "@angular/core";
 import { STColumn, STComponent } from "@delon/abc/st";
 import { SFSchema } from "@delon/form";
 import { ModalHelper, _HttpClient } from "@delon/theme";
@@ -12,6 +12,11 @@ import { SHARED_IMPORTS } from "@shared";
   templateUrl: "./orderview.component.html",
 })
 export class OrderviewComponent implements OnInit {
+  @ViewChild("itemsTemp", { static: true }) itemsTemp!: TemplateRef<{
+    $implicit: any;
+    index: number;
+    column: STColumn;
+  }>;
   constructor(private dataService: DataService) {}
   private readonly http = inject(_HttpClient);
   private readonly modal = inject(ModalHelper);
@@ -50,10 +55,8 @@ export class OrderviewComponent implements OnInit {
       },
       {
         title: "Items",
-        index: "titems",
-        className: "text-left",
+        render: this.itemsTemp,
         width: "160px",
-        sort: true,
       },
       {
         title: "Email Address",
@@ -81,5 +84,12 @@ export class OrderviewComponent implements OnInit {
         sort: true,
       },
     ];
+  }
+
+  viewDetail(item: any): void {
+    const model_no = item.titems
+    console.log(model_no);
+    const ptype = model_no.toString().charAt(0);
+    console.log(ptype)
   }
 }

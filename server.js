@@ -633,7 +633,7 @@ app.get('/viewdetail', (req, res) => {
 app.get('/order', (req, res) => {  
   const ptype = req.query.ptype;
   const num = req.query.num;
-  sql = `SELECT order_id,buyer_first,buyer_last,titems,email,address,order_date,status FROM ProductOrder`;
+  sql = `SELECT order_id,buyer_first,buyer_last,items,email,address,order_date,status FROM ProductOrder`;
  
   db.all(sql, [], (err, rows) => {
     if (err) {

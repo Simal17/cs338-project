@@ -5,3 +5,7 @@
   [columns]="columns"
   [data]="this.data"
 />
+
+<ng-template #itemsTemp let-item style="padding: 0">
+  <a nz-button nzType="link" (click)="viewDetail(item)">{{item.titems}}</a>
+</ng-template>
