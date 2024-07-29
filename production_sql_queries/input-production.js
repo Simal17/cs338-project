@@ -49,9 +49,9 @@ function inputData() {
     importCSV("./production-data/Product.csv", "INSERT INTO Product VALUES (?,?,?,?,?,?,?,?)");
     
     // ORDER TABLE
-    sql = "CREATE TABLE ProductOrder(order_id INT NOT NULL, buyer_first VARCHAR(30) NOT NULL, buyer_last VARCHAR(30) NOT NULL, titems INT NOT NULL, email VARCHAR(30) NOT NULL, address VARCHAR(30) NOT NULL, order_date DATE NOT NULL, status INT, CONSTRAINT pk_item PRIMARY KEY (order_id, titems), CONSTRAINT fk_item FOREIGN KEY (titems) REFERENCES Product(model_no) ON DELETE CASCADE ON UPDATE CASCADE)";
+    sql = "CREATE TABLE Orders(order_id INT NOT NULL, buyer_first VARCHAR(30) NOT NULL, buyer_last VARCHAR(30) NOT NULL, items INT NOT NULL, email VARCHAR(30) NOT NULL, address VARCHAR(30) NOT NULL, order_date DATE NOT NULL, status INT, CONSTRAINT pk_item PRIMARY KEY (order_id, items), CONSTRAINT fk_item FOREIGN KEY (items) REFERENCES Product(model_no) ON DELETE CASCADE ON UPDATE CASCADE)";
     db.run(sql);
-    importCSV("./production-data/order.csv", "INSERT INTO ProductOrder VALUES (?,?,?,?,?,?,?,?)");
+    importCSV("./production-data/order.csv", "INSERT INTO Orders VALUES (?,?,?,?,?,?,?,?)");
     
     // CPU TABLE
     sql = "CREATE TABLE CPU(model_no INT NOT NULL PRIMARY KEY, core_count INT NOT NULL, core_clock DECIMAL(10, 2) NOT NULL, boost_clock DECIMAL(10, 2) NOT NULL, graphics VARCHAR(30), socket VARCHAR(30), CONSTRAINT fk_cpu FOREIGN KEY (model_no) REFERENCES Product(model_no) ON DELETE CASCADE ON UPDATE CASCADE)";
