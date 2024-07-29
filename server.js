@@ -629,11 +629,14 @@ app.get('/viewdetail', (req, res) => {
   });
 });
 
-// view order details in the order view tab
+// view order details in the order view tab and corresponding product detail
 app.get('/order', (req, res) => {  
   const ptype = req.query.ptype;
   const num = req.query.num;
-  sql = `SELECT order_id,buyer_first,buyer_last,items,email,address,order_date,status FROM Orders`;
+  sql = `SELECT o.order_id, o.buyer_first, o.buyer_last, o.items, o.email, o.address, o.order_date, o.status,
+                p.name, p.manufacture, p.retail_price, p.stock_qtty, p.tdp, p.color, p.ptype
+         FROM Orders o
+         INNER JOIN Product p on p.model_no = o.items`;
  
   db.all(sql, [], (err, rows) => {
     if (err) {
@@ -642,6 +645,9 @@ app.get('/order', (req, res) => {
     res.send(JSON.stringify(rows));
   });
 });
+
+// viewing the product details of the orders
+
 
 const port = 3000;
 app.listen(port, () => {
