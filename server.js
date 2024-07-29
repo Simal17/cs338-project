@@ -25,6 +25,14 @@ const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
 // adding data to the low stock table
 let counter = 1;
 
+sql = `UPDATE Orders SET status_type = 
+                        CASE 
+                          WHEN status = 1 THEN 'Pending'
+                          WHEN status = 2 THEN 'Ready'
+                          ELSE NULL 
+                        END`;  
+db.run(sql);
+
 if(counter == 1) {
   sql = `DELETE FROM LowStock`;
   db.run(sql);
