@@ -16,6 +16,7 @@ Currently the features that are supported with the application is:
 Login functionality and the interface of the inventory with some GUI implemented.
 
 **DETAILS**
+
 The database is loaded when the server.js file is run in the terminal. 
 The features that are currently supported are:
 - Login
