@@ -33,7 +33,8 @@ ORDER BY count DESC
 LIMIT 10;
 
 -- R10. Displaying Order Details (LIMIT 5 for testing purposes) !-
-SELECT * FROM Orders o
+SELECT * 
+FROM Orders o
 INNER JOIN Product p on p.model_no = o.items
 LIMIT 5;
 
