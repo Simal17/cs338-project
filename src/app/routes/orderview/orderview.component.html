@@ -6,6 +6,19 @@
   [data]="this.data"
 />
 
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="detailModal"
+  nzPlacement="right"
+  [nzTitle]="detailTitle"
+  (nzOnClose)="detailModal = false"
+>
+  <ng-container *nzDrawerContent>
+    <div id="object-details" class="object-details"></div>
+  </ng-container>
+</nz-drawer>
+
 <ng-template #itemsTemp let-item style="padding: 0">
-  <a nz-button nzType="link" (click)="viewDetail(item)">{{item.titems}}</a>
+  <a nz-button nzType="link" (click)="viewDetail(item)">{{item.items}}</a>
 </ng-template>
+

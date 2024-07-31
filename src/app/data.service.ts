@@ -12,6 +12,7 @@ export class DataService {
   private dataUrl3 = 'http://localhost:3000/viewdetail';
   private dataUrl4 = 'http://localhost:3000/order';
   private dataUrl5 = 'http://localhost:3000/lowstock';
+  private dataUrl6 = 'http://localhost:3000/viewdetail2';
   private userRole = -1;
   constructor(private http: HttpClient) { }
   getData(params: HttpParams): Observable<any[]> {
@@ -49,6 +50,16 @@ export class DataService {
     });    // Fetch data from the backend
 
   }
+
+     // view details data for each item in the inventory
+     getViewDetail2(params: HttpParams): Observable<any[]> {
+
+      return this.http.get<any[]>(this.dataUrl6,        {
+        context: new HttpContext().set(ALLOW_ANONYMOUS, true),
+        params: params
+      });    // Fetch data from the backend
+  
+    }
 
   // view order details data in the order view tab
   getOrderDetail(): Observable<any[]> {

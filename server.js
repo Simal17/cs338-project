@@ -26,12 +26,19 @@ const db = new sqlite3.Database('./prod.db', sqlite3.OPEN_READWRITE, (err) => {
 let counter = 1;
 
 sql = `UPDATE Orders SET status_type = 
-                        CASE 
-                          WHEN status = 1 THEN 'Pending'
-                          WHEN status = 2 THEN 'Ready'
-                          ELSE NULL 
-                        END`;  
-db.run(sql);
+            CASE 
+              WHEN status = 1 THEN 'Pending'
+              WHEN status = 2 THEN 'Ready'
+              ELSE NULL 
+            END`;
+
+db.run(sql, function(err) {
+  if (err) {
+    return console.error("Error running the update:", err.message);
+  }
+  console.log(`Rows updated: ${this.changes}`);
+});
+
 
 if(counter == 1) {
   sql = `DELETE FROM LowStock`;
@@ -637,13 +644,43 @@ app.get('/viewdetail', (req, res) => {
   });
 });
 
+// view detail for all products on the inventory page
+app.get('/viewdetail2', (req, res) => {  
+  const ptype = req.query.ptype;
+  const num = req.query.num;
+  console.log(num);
+  console.log(ptype);
+  if (req.query.ptype == 'case') {
+    sql = `SELECT * FROM ProdCase INNER JOIN Product p on p.model_no = ProdCase.model_no WHERE ProdCase.model_no = $modelno `;
+  } else if (ptype == 'cpu_cooler') {
+    sql = `SELECT * FROM CPUCooler INNER JOIN Product p on p.model_no = CPUCooler.model_no WHERE CPUCooler.model_no = $modelno`;
+  } else if(ptype == 'cpu') {
+    sql = `SELECT * FROM CPU INNER JOIN Product p on p.model_no = CPU.model_no WHERE CPU.model_no = $modelno`;
+  } else if (ptype == 'gpu') {
+    sql = `SELECT * FROM GPU INNER JOIN Product p on p.model_no = GPU.model_no WHERE GPU.model_no = $modelno`;
+  } else if (ptype == 'memory') {
+    sql = `SELECT * FROM Memory INNER JOIN Product p on p.model_no = Memory.model_no WHERE Memory.model_no = $modelno`;
+  } else if (ptype == 'mobo') {
+    sql = `SELECT * FROM Motherboard INNER JOIN Product p on p.model_no = Motherboard.model_no WHERE Motherboard.model_no = $modelno`;
+  } else if (ptype == 'psu') {
+    sql = `SELECT * FROM PSU INNER JOIN Product p on p.model_no = PSU.model_no WHERE PSU.model_no = $modelno`;
+  } else if (ptype == 'storage') {
+    sql = `SELECT * FROM Storage INNER JOIN Product p on p.model_no = Storage.model_no WHERE Storage.model_no = $modelno`;
+  }
+  db.all(sql, {$modelno: num}, (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    console.log(rows);
+    res.send(JSON.stringify(rows));
+  });
+});
+
 // view order details in the order view tab and corresponding product detail
 app.get('/order', (req, res) => {  
   const ptype = req.query.ptype;
   const num = req.query.num;
-  sql = `SELECT o.order_id, o.buyer_first, o.buyer_last, o.items, o.email, o.address, o.order_date, o.status,
-                p.name, p.manufacture, p.retail_price, p.stock_qtty, p.tdp, p.color, p.ptype
-         FROM Orders o
+  sql = `SELECT * FROM Orders o
          INNER JOIN Product p on p.model_no = o.items`;
  
   db.all(sql, [], (err, rows) => {
