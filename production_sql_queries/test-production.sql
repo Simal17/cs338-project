@@ -1,14 +1,14 @@
 -- R6. Login - Finding Employee Credentials in the Database !-
 SELECT pwd
-FROM User
+FROM Users
 WHERE user_id = '170530';
 
 SELECT pwd
-FROM User
+FROM Users
 WHERE user_id = '170531';
 
 SELECT pwd
-FROM User
+FROM Users
 WHERE user_id = '177010';
 
 -- R7. Products Having Limited Stock !-
@@ -32,14 +32,11 @@ GROUP BY Product.manufacture
 ORDER BY count DESC
 LIMIT 10;
 
--- R10. Searching by Model Number !-
-SELECT *
-FROM Product
-WHERE Product.model_no = 10010;
-
-SELECT *
-FROM Product
-WHERE Product.model_no = 10004;
+-- R10. Displaying Order Details (LIMIT 5 for testing purposes) !-
+SELECT o.order_id, o.buyer_first, o.buyer_last, o.items, o.email, o.address, o.order_date, o.status, p.name, p.manufacture, p.retail_price, p.stock_qtty, p.tdp, p.color, p.ptype
+FROM Orders o
+INNER JOIN Product p on p.model_no = o.items
+LIMIT 5;
 
 -- R11. Filter Products By Price Range !-
 SELECT *

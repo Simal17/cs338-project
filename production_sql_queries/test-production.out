@@ -217,23 +217,86 @@
 ]
 [
   {
-    "model_no": 10010,
-    "name": "Montech AIR 100 ARGB",
-    "manufacture": "Montech",
+    "order_id": 1,
+    "buyer_first": "David",
+    "buyer_last": "Lee",
+    "items": 12193,
+    "email": "dl@gmail.com",
+    "address": "address1",
+    "order_date": "6/7/2024",
+    "status": 1,
+    "name": "SHARKOON Rebel C60 RGB",
+    "manufacture": "SHARKOON",
     "retail_price": 100,
-    "stock_qtty": 7,
+    "stock_qtty": 6,
     "tdp": 0,
-    "color": "Black",
+    "color": "White",
     "ptype": "case"
-  }
-]
-[
+  },
   {
-    "model_no": 10004,
-    "name": "NZXT H9 Flow",
-    "manufacture": "NZXT",
-    "retail_price": 154.99,
-    "stock_qtty": 21,
+    "order_id": 1,
+    "buyer_first": "David",
+    "buyer_last": "Lee",
+    "items": 30938,
+    "email": "dl@gmail.com",
+    "address": "address1",
+    "order_date": "6/7/2024",
+    "status": 1,
+    "name": "Intel Core i9-9820X",
+    "manufacture": "Intel",
+    "retail_price": 200,
+    "stock_qtty": 4,
+    "tdp": 165,
+    "color": "",
+    "ptype": "cpu"
+  },
+  {
+    "order_id": 1,
+    "buyer_first": "David",
+    "buyer_last": "Lee",
+    "items": 73979,
+    "email": "dl@gmail.com",
+    "address": "address1",
+    "order_date": "6/7/2024",
+    "status": 1,
+    "name": "Gigabyte GA-Q87N",
+    "manufacture": "Gigabyte",
+    "retail_price": 164.99,
+    "stock_qtty": 31,
+    "tdp": "",
+    "color": "",
+    "ptype": "mobo"
+  },
+  {
+    "order_id": 2,
+    "buyer_first": "John",
+    "buyer_last": "Cena",
+    "items": 50425,
+    "email": "jc@gmail.com",
+    "address": "address2",
+    "order_date": "6/7/2024",
+    "status": 2,
+    "name": "Corsair Dominator Platinum RGB 32 GB",
+    "manufacture": "Corsair",
+    "retail_price": 214.99,
+    "stock_qtty": 31,
+    "tdp": "Black",
+    "color": "",
+    "ptype": "memory"
+  },
+  {
+    "order_id": 3,
+    "buyer_first": "Alice",
+    "buyer_last": "Smith",
+    "items": 11999,
+    "email": "as@gmail.com",
+    "address": "address3",
+    "order_date": "6/7/2024",
+    "status": 1,
+    "name": "Jonsbo MOD5",
+    "manufacture": "Jonsbo",
+    "retail_price": 100,
+    "stock_qtty": 30,
     "tdp": 0,
     "color": "Black",
     "ptype": "case"
@@ -341,5 +404,3 @@
     "ptype": "cpu"
   }
 ]
-Query executed successfully.
-Query executed successfully.
