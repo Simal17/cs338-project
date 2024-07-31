@@ -20,7 +20,7 @@ Login functionality and the interface of the inventory with some GUI implemented
 The database is loaded when the server.js file is run in the terminal. 
 The features that are currently supported are:
 - Login
-- Inventory Details Page and Order Details Page (with a display of Product Details
+- Inventory Details Page and Order Details Page (with a display of Product Details)
 - Add and Delete Products
 - Filtering, Searching and Sorting Records
 - Dashboard Components (Low Stock Warning and Top 10 Manufacturers)
