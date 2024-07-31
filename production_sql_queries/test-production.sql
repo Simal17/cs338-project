@@ -1,4 +1,4 @@
--- Login - Finding Employee Credentials in the Database !-
+-- R6. Login - Finding Employee Credentials in the Database !-
 SELECT pwd
 FROM User
 WHERE user_id = '170530';
@@ -11,19 +11,19 @@ SELECT pwd
 FROM User
 WHERE user_id = '177010';
 
--- Products Having Limited Stock !-
+-- R7. Products Having Limited Stock !-
 SELECT Product.model_no, Product.name, Product.manufacture, Product.stock_qtty
 FROM Product
 WHERE Product.stock_qtty < 5
 LIMIT 10;
 
--- Filtering by Product Type, only displaying first 10 to avoid lengthiness!-
+-- R8. Filtering by Product Type, only displaying first 10 to avoid lengthiness!-
 SELECT *
 FROM Product
 WHERE ptype = 'cpu'
 LIMIT 10;
 
--- List of suppliers offering the most products !-
+-- R9. List of suppliers offering the most products !-
 SELECT 
 Product.manufacture,
 COUNT(*) AS count
@@ -32,7 +32,7 @@ GROUP BY Product.manufacture
 ORDER BY count DESC
 LIMIT 10;
 
--- Searching by Model Number !-
+-- R10. Searching by Model Number !-
 SELECT *
 FROM Product
 WHERE Product.model_no = 10010;
@@ -41,7 +41,7 @@ SELECT *
 FROM Product
 WHERE Product.model_no = 10004;
 
--- Filter Products By Price Range !-
+-- R11. Filter Products By Price Range !-
 SELECT *
 FROM Product
 WHERE retail_price 
