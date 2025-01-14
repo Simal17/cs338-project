@@ -30,3 +30,9 @@ Fancy Features:
 - Multi User Access Control
 - Dashboard (bar graphs, limited stock)
 - Advanced Filtering and Search Functionality
+
+Login page
+![image](https://github.com/user-attachments/assets/9c231776-4549-4683-8d90-ac1294643146)
+
+Inventory page
+![image](https://github.com/user-attachments/assets/27325bea-0fae-48ba-9470-70481fa17bea)
