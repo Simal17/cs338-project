@@ -1,6 +1,7 @@
 # cs338-project
 
-User portal built with Angular JS and SQlite
+**User portal built with Angular framework and SQlite as backend**
+
 Enviroment requirements:
 Git, Nodejs
 
