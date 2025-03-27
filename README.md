@@ -1,4 +1,4 @@
-# cs338-project
+# Computer select
 
 **User portal built with Angular framework and SQlite as backend**
 
